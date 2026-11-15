@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-GB" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Lucifer Database X — Sovereign Media Index</title>
+    <meta name="title" content="Lucifer Database X — Sovereign Media Index" />
+    <meta
+      name="description"
+      content="Verified scan telemetry for the Lucifer media fleet: 1,948,083 indexed files, 1,654.24 TB across two channel archives."
+    />
+    <meta name="theme-color" content="#0a0b0d" />
+    <meta name="author" content="Lucifer Open Source" />
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lucifer Database X — Sovereign Media Index" />
+    <meta
+      property="og:description"
+      content="Verified scan telemetry for the Lucifer media fleet: 1,948,083 indexed files, 1,654.24 TB across two channel archives."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Resolve the theme before first paint so the shell never flashes.
+      (function () {
+        try {
+          var saved = localStorage.getItem('lx-theme')
+          var theme =
+            saved === 'light' || saved === 'dark'
+              ? saved
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          document.documentElement.dataset.theme = theme
+        } catch (error) {
+          document.documentElement.dataset.theme = 'dark'
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

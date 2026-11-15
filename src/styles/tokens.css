@@ -1,0 +1,100 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design tokens — Lucifer Database X replica
+   Two themes, one neutral system, a single accent. No gradients, no glass.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --sidebar-w: 246px;
+  --topbar-h: 56px;
+  --content-max: 1180px;
+  --page-x: 44px;
+
+  --r-xs: 3px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  --fs-micro: 0.688rem;
+  --fs-sm: 0.813rem;
+  --fs-base: 0.938rem;
+  --fs-md: 1.063rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.625rem;
+  --fs-h1: 2.75rem;
+  --fs-hero: clamp(2.6rem, 5.2vw, 4.25rem);
+}
+
+:root[data-theme='dark'] {
+  --bg: #0a0b0d;
+  --bg-2: #0e1013;
+  --surface: #12151a;
+  --surface-2: #171b21;
+  --surface-3: #1d232b;
+
+  --text: #f1f4f7;
+  --text-2: #b7c0cb;
+  --text-3: #7c8794;
+
+  --line: #20262e;
+  --line-2: #2c343e;
+  --line-3: #3a4450;
+
+  --accent: #6a9dff;
+  --accent-strong: #3f7dff;
+  --accent-soft: rgba(106, 157, 255, 0.12);
+  --on-accent: #07101f;
+
+  --pos: #4ade80;
+  --pos-soft: rgba(74, 222, 128, 0.12);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.12);
+  --info: #67e8f9;
+  --info-soft: rgba(103, 232, 249, 0.12);
+  --neg: #f87171;
+  --neg-soft: rgba(248, 113, 113, 0.12);
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 24px 48px -32px rgba(0, 0, 0, 0.9);
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04), 0 40px 80px -48px rgba(0, 0, 0, 1);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --invert-track: rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme='light'] {
+  --bg: #f6f7f8;
+  --bg-2: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f2f4f6;
+  --surface-3: #e8ecf0;
+
+  --text: #0c1116;
+  --text-2: #39434f;
+  --text-3: #5b6672;
+
+  --line: #e3e7eb;
+  --line-2: #d2d8df;
+  --line-3: #b9c2cc;
+
+  --accent: #1d4ed8;
+  --accent-strong: #1740b6;
+  --accent-soft: rgba(29, 78, 216, 0.09);
+  --on-accent: #ffffff;
+
+  --pos: #0a6e40;
+  --pos-soft: rgba(15, 122, 72, 0.1);
+  --warn: #9a6407;
+  --warn-soft: rgba(154, 100, 7, 0.1);
+  --info: #0b6f86;
+  --info-soft: rgba(11, 111, 134, 0.1);
+  --neg: #b42318;
+  --neg-soft: rgba(180, 35, 24, 0.1);
+
+  --shadow-card: 0 1px 2px rgba(12, 17, 22, 0.04), 0 18px 36px -30px rgba(12, 17, 22, 0.4);
+  --shadow-panel: 0 1px 2px rgba(12, 17, 22, 0.05), 0 40px 80px -56px rgba(12, 17, 22, 0.45);
+  --grid-line: rgba(12, 17, 22, 0.05);
+  --invert-track: rgba(12, 17, 22, 0.07);
+}

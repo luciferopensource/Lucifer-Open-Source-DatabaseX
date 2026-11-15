@@ -1,0 +1,49 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Cursor — the only motion in the entire site.
+   A solid dot tracks the pointer instantly, a ring follows with inertia and
+   swells over interactive elements, and a short trail decays behind it.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+
+.cursor--dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.cursor--ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  background: transparent;
+}
+
+.cursor--trail {
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.cursor-layer[data-touch='true'] {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .cursor-layer {
+    display: none;
+  }
+}

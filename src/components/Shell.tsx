@@ -1,0 +1,179 @@
+import type { Route } from '../lib/router'
+import type { Theme } from '../lib/theme'
+import { getAggregatedDatabase } from '../data/aggregateDatabase'
+import { OWNER_INFO, TELEGRAM_COMMUNITY_LINKS } from '../data/channelIntelligenceData'
+import { useStorageUnit, type StorageUnit } from '../data/storageUnitContext'
+import { IconDatabase, IconFilm, IconGrid, IconMoon, IconSun } from './Icons'
+
+const NAV: { route: Route; label: string; index: string; Icon: typeof IconGrid }[] = [
+  { route: 'home', label: 'Overview', index: '00', Icon: IconGrid },
+  { route: 'total-database', label: 'Total Database', index: '01', Icon: IconDatabase },
+  { route: 'stream-backup-1', label: 'Backup 01', index: '02', Icon: IconFilm },
+  { route: 'stream-backup-2', label: 'Backup 02', index: '03', Icon: IconFilm },
+]
+
+const PAGE_TITLES: Record<Route, string> = {
+  home: 'Overview',
+  'total-database': 'Total Database',
+  'stream-backup-1': 'Stream Backup 01',
+  'stream-backup-2': 'Stream Backup 02',
+}
+
+function BrandMark() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <rect x="3" y="3" width="4.6" height="18" rx="1.4" fill="currentColor" />
+      <rect x="9.7" y="3" width="4.6" height="11" rx="1.4" fill="currentColor" opacity="0.65" />
+      <rect x="16.4" y="3" width="4.6" height="15" rx="1.4" fill="currentColor" opacity="0.4" />
+    </svg>
+  )
+}
+
+export function Sidebar({
+  route,
+  theme,
+  setTheme,
+}: {
+  route: Route
+  theme: Theme
+  setTheme: (theme: Theme) => void
+}) {
+  const { unit, setUnit } = useStorageUnit()
+  const aggregate = getAggregatedDatabase()
+
+  return (
+    <aside className="sidebar">
+      <a className="brand" href="#/">
+        <span className="brand__mark">
+          <BrandMark />
+        </span>
+        <span className="brand__text">
+          <span className="brand__name">Lucifer Database X</span>
+          <span className="brand__meta">Sovereign media index</span>
+        </span>
+      </a>
+
+      <nav className="nav" aria-label="Primary">
+        <span className="nav__label">Workspace</span>
+        {NAV.map((item) => (
+          <a
+            key={item.route}
+            className={route === item.route ? 'nav__item is-active' : 'nav__item'}
+            href={item.route === 'home' ? '#/' : `#${item.route}`}
+            aria-current={route === item.route ? 'page' : undefined}
+          >
+            <item.Icon />
+            {item.label}
+            <span className="nav__index">{item.index}</span>
+          </a>
+        ))}
+      </nav>
+
+      <div className="sidebar__foot">
+        <div className="theme-switch" role="group" aria-label="Colour theme">
+          <button type="button" aria-pressed={theme === 'light'} onClick={() => setTheme('light')}>
+            <IconSun />
+            Light
+          </button>
+          <button type="button" aria-pressed={theme === 'dark'} onClick={() => setTheme('dark')}>
+            <IconMoon />
+            Dark
+          </button>
+        </div>
+
+        <label className="unit">
+          <span className="unit__label">Storage unit</span>
+          <select value={unit} onChange={(event) => setUnit(event.target.value as StorageUnit)}>
+            <option value="AUTO">AUTO</option>
+            <option value="PB">PB</option>
+            <option value="TB">TB</option>
+            <option value="GB">GB</option>
+            <option value="MB">MB</option>
+          </select>
+        </label>
+
+        <div className="status-line">
+          <span className="status-line__dot" />
+          {aggregate.archiveCount} channels verified
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+export function Topbar({ route }: { route: Route }) {
+  const { formatString } = useStorageUnit()
+  const aggregate = getAggregatedDatabase()
+
+  return (
+    <header className="topbar">
+      <div className="crumbs">
+        <span>Index</span>
+        <em>/</em>
+        <b>{PAGE_TITLES[route]}</b>
+      </div>
+      <div className="telemetry">
+        <span>
+          <span className="telemetry__dot" />
+          {aggregate.archiveCount} channels
+        </span>
+        <span>{formatString(aggregate.combinedStorage)} volume</span>
+        <span>{aggregate.totalFiles} files</span>
+      </div>
+    </header>
+  )
+}
+
+export function Footer() {
+  const aggregate = getAggregatedDatabase()
+  return (
+    <footer className="footer">
+      <div className="footer__inner">
+        <div className="footer__brand">
+          <h3>Lucifer Database X</h3>
+          <p>
+            A presentation layer for verified channel scan telemetry. {aggregate.archiveCount} archives,{' '}
+            {aggregate.totalFiles} indexed files and{' '}
+            {aggregate.extensionIntelligence.uniqueExtensionsCount.toLocaleString('en-GB')} unique extensions — every
+            figure on this site traced back to the two audit reports. Nothing here is estimated.
+          </p>
+        </div>
+
+        <div className="footer__col">
+          <h4>Community dispatch</h4>
+          {TELEGRAM_COMMUNITY_LINKS.map((link) => (
+            <a className="footer__link" key={link.id} href={link.url} target="_blank" rel="noreferrer">
+              {link.title}
+              <span>{link.handleOrEmail}</span>
+            </a>
+          ))}
+        </div>
+
+        <div className="footer__col">
+          <h4>Reports</h4>
+          <a className="footer__link" href="#total-database">
+            Total Database <span>Aggregate</span>
+          </a>
+          <a className="footer__link" href="#stream-backup-1">
+            Backup 01 <span>LMS-4D0E-6C2A</span>
+          </a>
+          <a className="footer__link" href="#stream-backup-2">
+            Backup 02 <span>LMS-94E3-7DE1</span>
+          </a>
+          <a className="footer__link" href="#/">
+            Overview <span>Living archive</span>
+          </a>
+        </div>
+      </div>
+
+      <div className="footer__bar">
+        <div className="footer__bar-inner">
+          <span>
+            © 2026 {OWNER_INFO.entity} · {OWNER_INFO.role}
+          </span>
+          <span>Static shell · no canvas · no fabricated records</span>
+        </div>
+      </div>
+    </footer>
+  )
+}
