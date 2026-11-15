@@ -19,7 +19,7 @@ runtime; the data modules were copied verbatim and everything visual was written
 | Snow canvas, drifting pumpkins, cursor stardust | Nothing seasonal |
 | Horizontal top navigation with badge tabs | Left sidebar workspace (two-row pills on mobile) |
 | Gold cursor dot, ring and stardust trail | Accent dot, inertial ring and a seven-dot trail — the **only** motion |
-| Dark only | Light and dark, system default, persisted in `localStorage` |
+| Dark only | Light and dark, six accent palettes and three typefaces, all persisted per device |
 
 Layout, typography, spacing, component shapes, navigation and colour system are all new. Every
 figure, table row and section order matches the source.
@@ -62,6 +62,7 @@ src/
 ├── components/
 │   ├── Shell.tsx               # sidebar, top bar, footer
 │   ├── Cursor.tsx              # the only animation: dot, ring, trail
+│   ├── Settings.tsx            # appearance drawer: mode, accent, typeface
 │   ├── Reports.tsx             # scan strip, category matrix, contributions,
 │   │                           # resolution, storage, extension ledger
 │   ├── Icons.tsx               # hand-drawn SVG set, no icon dependency
@@ -72,7 +73,7 @@ src/
 │   └── Backup.tsx              # shared by both backups
 ├── lib/
 │   ├── router.ts               # hash route hook
-│   ├── theme.ts                # light/dark with persistence
+│   ├── theme.ts                # appearance state + palette metadata
 │   └── view.ts                 # dataset → view rows, duration arithmetic
 ├── data/                       # copied verbatim from the source project
 │   ├── channelIntelligenceData.ts
@@ -82,7 +83,7 @@ src/
 │   ├── aggregateDatabase.ts
 │   ├── storageUnitContext.tsx
 │   └── catalog.ts              # empty by design
-├── styles/                     # tokens, base, shell, pages, reports, cursor
+│   ├── styles/                     # tokens, base, shell, pages, reports, cursor, settings
 └── types/media.ts
 
 functions/api/                  # six read-only Pages Functions, copied verbatim
@@ -104,6 +105,24 @@ public/                         # _headers, _routes.json, favicon
 * TypeScript is strict; there is no `any` in the application code.
 
 ---
+
+## Appearance settings
+
+Open **Appearance** in the sidebar footer (gear icon). The drawer holds three independent
+preferences; all of them apply instantly and are stored in `localStorage`.
+
+| Setting | Options | Notes |
+|---|---|---|
+| Mode | Light, Dark | Defaults to the operating-system preference |
+| Colour | Original blue, Emerald, Violet, Amber, Rose, Graphite | Original blue is the default; every palette is defined separately for light and dark so contrast holds in both |
+| Typeface | Grotesk, Editorial, Technical | Display face only — body copy stays on Inter and numbers on JetBrains Mono, so tables never reflow |
+
+Persistence keys: `lx-theme`, `lx-accent`, `lx-font`. The boot script in `index.html` applies all
+three before the first paint, so there is no flash. **Reset to original** returns to the system
+mode, blue accent and Grotesk type.
+
+Adding a palette means adding one CSS block per mode in `src/styles/tokens.css`, one entry in
+`ACCENTS` (`src/lib/theme.ts`) and that is all — no component touches colour directly.
 
 ## Motion policy
 

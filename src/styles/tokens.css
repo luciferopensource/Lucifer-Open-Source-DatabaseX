@@ -73,7 +73,7 @@
 
   --text: #0c1116;
   --text-2: #39434f;
-  --text-3: #5b6672;
+  --text-3: #525d6a;
 
   --line: #e3e7eb;
   --line-2: #d2d8df;
@@ -97,4 +97,117 @@
   --shadow-panel: 0 1px 2px rgba(12, 17, 22, 0.05), 0 40px 80px -56px rgba(12, 17, 22, 0.45);
   --grid-line: rgba(12, 17, 22, 0.05);
   --invert-track: rgba(12, 17, 22, 0.07);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Accent palettes — the original blue is the default (defined above).
+   Every palette is tuned per mode so both light and dark keep AA contrast.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root[data-theme='dark'][data-accent='emerald'] {
+  --accent: #3ddc97;
+  --accent-strong: #22c98a;
+  --accent-soft: rgba(61, 220, 151, 0.12);
+  --on-accent: #04140d;
+}
+
+:root[data-theme='light'][data-accent='emerald'] {
+  --accent: #0b7a53;
+  --accent-strong: #075e40;
+  --accent-soft: rgba(11, 122, 83, 0.09);
+  --on-accent: #ffffff;
+}
+
+:root[data-theme='dark'][data-accent='violet'] {
+  --accent: #a78bfa;
+  --accent-strong: #8b5cf6;
+  --accent-soft: rgba(167, 139, 250, 0.14);
+  --on-accent: #12061f;
+}
+
+:root[data-theme='light'][data-accent='violet'] {
+  --accent: #6d28d9;
+  --accent-strong: #5b21b6;
+  --accent-soft: rgba(109, 40, 217, 0.09);
+  --on-accent: #ffffff;
+}
+
+:root[data-theme='dark'][data-accent='amber'] {
+  --accent: #f5b544;
+  --accent-strong: #e09a24;
+  --accent-soft: rgba(245, 181, 68, 0.14);
+  --on-accent: #1a1103;
+}
+
+:root[data-theme='light'][data-accent='amber'] {
+  --accent: #a35a06;
+  --accent-strong: #86490a;
+  --accent-soft: rgba(163, 90, 6, 0.09);
+  --on-accent: #ffffff;
+}
+
+:root[data-theme='dark'][data-accent='rose'] {
+  --accent: #fb7185;
+  --accent-strong: #f43f5e;
+  --accent-soft: rgba(251, 113, 133, 0.13);
+  --on-accent: #1a0508;
+}
+
+:root[data-theme='light'][data-accent='rose'] {
+  --accent: #b3123e;
+  --accent-strong: #8f0d31;
+  --accent-soft: rgba(179, 18, 62, 0.09);
+  --on-accent: #ffffff;
+}
+
+:root[data-theme='dark'][data-accent='graphite'] {
+  --accent: #c7d2de;
+  --accent-strong: #aab8c8;
+  --accent-soft: rgba(199, 210, 222, 0.12);
+  --on-accent: #0a0b0d;
+}
+
+:root[data-theme='light'][data-accent='graphite'] {
+  --accent: #111827;
+  --accent-strong: #000000;
+  --accent-soft: rgba(17, 24, 39, 0.08);
+  --on-accent: #ffffff;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Font pairings — display face only; body and numbers stay on Inter and
+   JetBrains Mono so tables never reflow into an unreadable layout.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root[data-font='editorial'] {
+  --font-display: 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+:root[data-font='editorial'] h1,
+:root[data-font='editorial'] h2,
+:root[data-font='editorial'] h3,
+:root[data-font='editorial'] h4 {
+  letter-spacing: -0.012em;
+  font-weight: 500;
+}
+
+:root[data-font='editorial'] .hero__title {
+  letter-spacing: -0.02em;
+}
+
+:root[data-font='technical'] {
+  --font-display: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root[data-font='technical'] h1,
+:root[data-font='technical'] h2,
+:root[data-font='technical'] h3,
+:root[data-font='technical'] h4 {
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+
+:root[data-font='technical'] .hero__title {
+  letter-spacing: -0.045em;
 }

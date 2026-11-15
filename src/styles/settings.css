@@ -1,0 +1,262 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Settings drawer — mode, accent palette and display typeface.
+   Opens instantly (no slide, no fade) per the project motion policy.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.settings-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(4, 6, 10, 0.55);
+}
+
+:root[data-theme='light'] .settings-scrim {
+  background: rgba(12, 17, 22, 0.28);
+}
+
+.settings {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 382px;
+  max-width: 100%;
+  background: var(--bg-2);
+  border-left: 1px solid var(--line);
+  box-shadow: var(--shadow-panel);
+  overflow-y: auto;
+}
+
+.settings__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 22px 18px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.settings__head h2 {
+  margin-top: 9px;
+  font-size: 1.28rem;
+  letter-spacing: -0.025em;
+}
+
+.settings__close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text-3);
+}
+
+.settings__close:hover {
+  color: var(--text);
+  border-color: var(--line-3);
+}
+
+.settings__body {
+  display: grid;
+  gap: 26px;
+  padding: 22px;
+}
+
+.settings__group h3 {
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.settings__hint {
+  margin: -3px 0 10px;
+  font-size: 0.735rem;
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
+/* Mode */
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  padding: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.mode-grid button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+.mode-grid button:hover {
+  color: var(--text);
+}
+
+.mode-grid button[aria-pressed='true'] {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  color: var(--text);
+}
+
+/* Accent palettes */
+
+.accent-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.accent-grid button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 9px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 0.76rem;
+  color: var(--text-2);
+  text-align: left;
+}
+
+.accent-grid button:hover {
+  border-color: var(--line-3);
+}
+
+.accent-grid button[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.accent-swatch {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.accent-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accent-check {
+  margin-left: auto;
+  flex: none;
+  color: var(--accent);
+}
+
+/* Typeface */
+
+.font-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.font-grid button {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  padding: 13px 10px 11px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  text-align: left;
+}
+
+.font-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--accent);
+}
+
+.font-grid button:hover {
+  border-color: var(--line-3);
+}
+
+.font-grid button[aria-pressed='true'] {
+  border-color: var(--accent);
+}
+
+.font-sample {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text);
+}
+
+.font-grid button[data-font-preview='grotesk'] .font-sample {
+  font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-grid button[data-font-preview='editorial'] .font-sample {
+  font-family: 'Newsreader', ui-serif, Georgia, serif;
+}
+
+.font-grid button[data-font-preview='technical'] .font-sample {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.font-name {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.settings__reset {
+  width: 100%;
+  height: 38px;
+  font-size: 0.78rem;
+}
+
+.settings__foot {
+  margin-top: auto;
+  padding: 14px 22px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+}
+
+@media (max-width: 560px) {
+  .settings {
+    top: auto;
+    width: 100%;
+    height: min(88vh, 760px);
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    border-top-left-radius: var(--r-lg);
+    border-top-right-radius: var(--r-lg);
+  }
+}

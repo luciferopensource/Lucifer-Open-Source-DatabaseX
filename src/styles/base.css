@@ -264,3 +264,47 @@ svg {
   border-color: var(--line);
   background: transparent;
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Layout safety — long technical strings (IDs, scan references, file names,
+   storage values) wrap inside their own cell rather than colliding with a
+   neighbour. Matters most in light mode where faint borders hide the overlap.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.kpi__value,
+.scan-cell dd,
+.archive-card__stats dd,
+.cat-row__files,
+.cat-row__storage,
+.res-row__files,
+.res-row__storage,
+.res-row__pct,
+.record__name,
+.record__size,
+.legend__item,
+.meta-line b,
+.tbl__prov,
+.tbl__ext {
+  overflow-wrap: anywhere;
+}
+
+.archive-grid > *,
+.contrib-grid > *,
+.storage-grid > *,
+.cat-row > *,
+.res-row > *,
+.scan-strip > *,
+.font-grid > *,
+.accent-grid > * {
+  min-width: 0;
+}
+
+/* The display font can change per user setting; keep the tightest heading
+   from ever clipping its container. */
+.hero__title,
+.page-head h1,
+.section__title,
+.brand__name {
+  overflow-wrap: anywhere;
+}

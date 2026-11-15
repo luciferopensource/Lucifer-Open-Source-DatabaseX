@@ -18,8 +18,16 @@ visual dependencies beyond React.
 
 * Neutral surfaces, hairline borders, one blue accent, generous spacing. No gradients, no glass, no
   glows, no icon dependency beyond the hand-drawn set in `src/components/Icons.tsx`.
-* Two themes only: `data-theme="dark"` and `data-theme="light"` on `<html>`, resolved before first
+* Two modes only: `data-theme="dark"` and `data-theme="light"` on `<html>`, resolved before first
   paint by the boot script in `index.html`, persisted as `lx-theme`.
+* Accent palettes live on `data-accent` (`blue` default, plus `emerald`, `violet`, `amber`, `rose`,
+  `graphite`) and display faces on `data-font` (`grotesk` default, `editorial`, `technical`),
+  persisted as `lx-accent` and `lx-font`. The drawer is `src/components/Settings.tsx`.
+* Every palette needs a **light and a dark block** in `src/styles/tokens.css` with AA-contrast
+  values, and an `ACCENTS` entry in `src/lib/theme.ts`. Never colour a component directly — use
+  `var(--accent)` and friends.
+* Typefaces change the display font only. Body copy and numbers stay on Inter and JetBrains Mono so
+  tables never reflow or overlap.
 * Typography: Space Grotesk (display), Inter (body), JetBrains Mono (numbers, IDs, labels).
 * Never reintroduce the source's gold-and-obsidian palette, glass panels or emoji navigation tabs.
 
@@ -44,6 +52,8 @@ states must change instantly.
   prove rendering.
 * Check that the sidebar collapses to the two-row pill navigation below 1080 px and that no page
   produces horizontal body overflow.
+* Sweep all six accents in both modes and all three typefaces before shipping a UI change: body
+  `scrollWidth` must equal `clientWidth`, and long mono strings must wrap inside their own cell.
 
 ## 7. Git
 

@@ -1,9 +1,10 @@
 import type { Route } from '../lib/router'
-import type { Theme } from '../lib/theme'
+import type { Appearance } from '../lib/theme'
+import { ACCENTS } from '../lib/theme'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO, TELEGRAM_COMMUNITY_LINKS } from '../data/channelIntelligenceData'
 import { useStorageUnit, type StorageUnit } from '../data/storageUnitContext'
-import { IconDatabase, IconFilm, IconGrid, IconMoon, IconSun } from './Icons'
+import { IconDatabase, IconFilm, IconGrid, IconSettings } from './Icons'
 
 const NAV: { route: Route; label: string; index: string; Icon: typeof IconGrid }[] = [
   { route: 'home', label: 'Overview', index: '00', Icon: IconGrid },
@@ -31,15 +32,17 @@ function BrandMark() {
 
 export function Sidebar({
   route,
-  theme,
-  setTheme,
+  appearance,
+  onOpenSettings,
 }: {
   route: Route
-  theme: Theme
-  setTheme: (theme: Theme) => void
+  appearance: Appearance
+  onOpenSettings: () => void
 }) {
   const { unit, setUnit } = useStorageUnit()
   const aggregate = getAggregatedDatabase()
+  const modeLabel = appearance.theme === 'dark' ? 'Dark' : 'Light'
+  const accentLabel = ACCENTS.find((accent) => accent.id === appearance.accent)?.label ?? 'Original blue'
 
   return (
     <aside className="sidebar">
@@ -70,16 +73,16 @@ export function Sidebar({
       </nav>
 
       <div className="sidebar__foot">
-        <div className="theme-switch" role="group" aria-label="Colour theme">
-          <button type="button" aria-pressed={theme === 'light'} onClick={() => setTheme('light')}>
-            <IconSun />
-            Light
-          </button>
-          <button type="button" aria-pressed={theme === 'dark'} onClick={() => setTheme('dark')}>
-            <IconMoon />
-            Dark
-          </button>
-        </div>
+        <button type="button" className="appearance-trigger" onClick={onOpenSettings}>
+          <IconSettings width={15} height={15} />
+          <span className="appearance-trigger__text">
+            <span className="appearance-trigger__label">Appearance</span>
+            <span className="appearance-trigger__value">
+              {modeLabel} · {accentLabel}
+            </span>
+          </span>
+          <span className="appearance-trigger__dot" aria-hidden="true" />
+        </button>
 
         <label className="unit">
           <span className="unit__label">Storage unit</span>

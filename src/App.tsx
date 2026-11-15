@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRoute } from './lib/router'
-import { useTheme } from './lib/theme'
+import { useAppearance } from './lib/theme'
 import { StorageUnitProvider } from './data/storageUnitContext'
 import { REGISTERED_ARCHIVES } from './data/archiveRegistry'
 import { Sidebar, Topbar, Footer } from './components/Shell'
 import { Cursor } from './components/Cursor'
+import { Settings } from './components/Settings'
 import { Home } from './pages/Home'
 import { TotalDatabase } from './pages/TotalDatabase'
 import { Backup } from './pages/Backup'
@@ -19,7 +20,8 @@ const TITLES: Record<Route, string> = {
 
 export default function App() {
   const route = useRoute()
-  const { theme, setTheme } = useTheme()
+  const appearance = useAppearance()
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   useEffect(() => {
     document.title = `${TITLES[route]} — Lucifer Database X`
@@ -31,7 +33,7 @@ export default function App() {
   return (
     <StorageUnitProvider>
       <div className="shell">
-        <Sidebar route={route} theme={theme} setTheme={setTheme} />
+        <Sidebar route={route} appearance={appearance} onOpenSettings={() => setSettingsOpen(true)} />
         <div className="frame">
           <Topbar route={route} />
           <main className="page">
@@ -43,6 +45,7 @@ export default function App() {
           <Footer />
         </div>
       </div>
+      <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} appearance={appearance} />
       <Cursor />
     </StorageUnitProvider>
   )
