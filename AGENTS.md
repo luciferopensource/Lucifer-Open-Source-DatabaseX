@@ -34,8 +34,13 @@ visual dependencies beyond React.
 ## 4. Motion policy
 
 The cursor layer (`src/components/Cursor.tsx`) is the **only** animation. Do not add CSS
-transitions, `@keyframes`, `backdrop-filter`, `smooth` scrolling, canvas or WebGL. Theme and hover
-states must change instantly.
+transitions, `@keyframes`, `smooth` scrolling, canvas or WebGL. Theme and hover states must change
+instantly.
+
+`backdrop-filter` is allowed in exactly one place — `src/styles/glass.css`, scoped to
+`:root[data-glass='on']` — because liquid glass is a user-facing setting. Never add it to a
+component directly, and never apply a second blur to a control nested inside a glass panel: tint
+only, or the effect turns muddy and the compositor budget dies.
 
 ## 5. Data honesty invariants
 
@@ -54,6 +59,9 @@ states must change instantly.
   produces horizontal body overflow.
 * Sweep all six accents in both modes and all three typefaces before shipping a UI change: body
   `scrollWidth` must equal `clientWidth`, and long mono strings must wrap inside their own cell.
+* Liquid glass has to be checked at both extremes (5 % and 100 %) in both modes, with the settings
+  drawer open and closed, and the result must stay readable — a blurred backdrop that swallows the
+  table text is a bug, not a style.
 
 ## 7. Git
 

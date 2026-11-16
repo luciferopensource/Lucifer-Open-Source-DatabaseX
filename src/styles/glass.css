@@ -1,0 +1,133 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Liquid glass — optional iOS-style translucency for every box on the page.
+
+   Off by default: surfaces stay opaque exactly as before. Turned on from
+   Settings, the surface tokens become translucent and each container gets a
+   backdrop blur whose radius is driven by --glass-pct (5–100). Nested controls
+   inherit a tint only, never a second blur — stacked backdrop filters are both
+   expensive and visually muddy.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root[data-glass='on'] {
+  --glass-blur: calc(var(--glass-pct) * 0.24px);
+}
+
+/* ── Primary surfaces: one blur each ──────────────────────────────────────── */
+
+:root[data-glass='on'] .sidebar,
+:root[data-glass='on'] .footer {
+  background: color-mix(in srgb, var(--bg-2) var(--glass-strong), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+:root[data-glass='on'] .topbar {
+  background: color-mix(in srgb, var(--bg) var(--glass-strong), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+:root[data-glass='on'] .snapshot,
+:root[data-glass='on'] .panel,
+:root[data-glass='on'] .archive-card,
+:root[data-glass='on'] .contrib,
+:root[data-glass='on'] .storage-tile,
+:root[data-glass='on'] .empty,
+:root[data-glass='on'] .settings {
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 46%),
+    color-mix(in srgb, var(--surface) var(--glass-alpha), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge),
+    0 18px 40px -28px rgba(0, 0, 0, 0.55);
+}
+
+/* The KPI row blurs once; its cells stay transparent so the blur is not
+   re-sampled four times. */
+:root[data-glass='on'] .kpi-row {
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 46%),
+    color-mix(in srgb, var(--surface) var(--glass-alpha), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  box-shadow: inset 0 1px 0 var(--glass-edge);
+}
+
+:root[data-glass='on'] .kpi {
+  background: transparent;
+}
+
+:root[data-glass='on'] .scan-strip {
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 52%),
+    color-mix(in srgb, var(--surface) var(--glass-strong), transparent);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  box-shadow: inset 0 1px 0 var(--glass-edge);
+}
+
+:root[data-glass='on'] .scan-cell {
+  background: transparent;
+}
+
+/* ── Strips inside a glass panel: tint only, no extra blur ────────────────── */
+
+:root[data-glass='on'] .panel__head,
+:root[data-glass='on'] .summary-strip,
+:root[data-glass='on'] .settings__head {
+  background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+}
+
+:root[data-glass='on'] .tbl th {
+  background: color-mix(in srgb, var(--surface-2) var(--glass-strong), transparent);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.5));
+}
+
+/* ── Controls and options: tint only ─────────────────────────────────────── */
+
+:root[data-glass='on'] .appearance-trigger,
+:root[data-glass='on'] .unit select,
+:root[data-glass='on'] .mode-grid,
+:root[data-glass='on'] .accent-grid button,
+:root[data-glass='on'] .font-grid button,
+:root[data-glass='on'] .chip-btn,
+:root[data-glass='on'] .pager button,
+:root[data-glass='on'] .field input,
+:root[data-glass='on'] .select,
+:root[data-glass='on'] .nav__item:hover,
+:root[data-glass='on'] .nav__item.is-active {
+  background: color-mix(in srgb, var(--surface-2) 62%, transparent);
+}
+
+:root[data-glass='on'] .archive-card:hover {
+  background: color-mix(in srgb, var(--surface-2) var(--glass-alpha), transparent);
+}
+
+/* Hairlines read better against a busy backdrop when lifted slightly. */
+:root[data-glass='on'] .panel,
+:root[data-glass='on'] .kpi-row,
+:root[data-glass='on'] .archive-card,
+:root[data-glass='on'] .scan-strip,
+:root[data-glass='on'] .snapshot,
+:root[data-glass='on'] .settings {
+  border-color: color-mix(in srgb, var(--line-2) 80%, transparent);
+}
+
+/* Browsers without backdrop-filter get a solid surface rather than a
+   transparent mess. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root[data-glass='on'] .sidebar,
+  :root[data-glass='on'] .topbar,
+  :root[data-glass='on'] .footer,
+  :root[data-glass='on'] .panel,
+  :root[data-glass='on'] .kpi-row,
+  :root[data-glass='on'] .scan-strip,
+  :root[data-glass='on'] .snapshot,
+  :root[data-glass='on'] .archive-card,
+  :root[data-glass='on'] .settings {
+    background: var(--surface);
+  }
+}

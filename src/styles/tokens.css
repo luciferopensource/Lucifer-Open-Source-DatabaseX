@@ -27,6 +27,10 @@
   --fs-xl: 1.625rem;
   --fs-h1: 2.75rem;
   --fs-hero: clamp(2.6rem, 5.2vw, 4.25rem);
+
+  /* Liquid glass: strength is a percentage (5–100) mapped to pixels. */
+  --glass-pct: 40;
+  --glass-blur: 0px;
 }
 
 :root[data-theme='dark'] {
@@ -62,6 +66,12 @@
   --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.04), 0 40px 80px -48px rgba(0, 0, 0, 1);
   --grid-line: rgba(255, 255, 255, 0.045);
   --invert-track: rgba(255, 255, 255, 0.06);
+
+  --page-image: url('/backgrounds/mesh-dark.svg');
+  --glass-alpha: 52%;
+  --glass-strong: 66%;
+  --glass-sheen: rgba(255, 255, 255, 0.09);
+  --glass-edge: rgba(255, 255, 255, 0.16);
 }
 
 :root[data-theme='light'] {
@@ -97,6 +107,12 @@
   --shadow-panel: 0 1px 2px rgba(12, 17, 22, 0.05), 0 40px 80px -56px rgba(12, 17, 22, 0.45);
   --grid-line: rgba(12, 17, 22, 0.05);
   --invert-track: rgba(12, 17, 22, 0.07);
+
+  --page-image: url('/backgrounds/mesh-light.svg');
+  --glass-alpha: 58%;
+  --glass-strong: 72%;
+  --glass-sheen: rgba(255, 255, 255, 0.7);
+  --glass-edge: rgba(255, 255, 255, 0.9);
 }
 
 

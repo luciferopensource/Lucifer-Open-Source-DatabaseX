@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import type { Appearance } from '../lib/theme'
-import { ACCENTS, FONTS } from '../lib/theme'
+import { ACCENTS, FONTS, GLASS_MAX, GLASS_MIN, GLASS_STEP } from '../lib/theme'
 import { IconCheck, IconClose, IconMoon, IconSun } from './Icons'
 
 /**
@@ -16,7 +16,8 @@ export function Settings({
   onClose: () => void
   appearance: Appearance
 }) {
-  const { theme, accent, font, setTheme, setAccent, setFont, reset } = appearance
+  const { theme, accent, font, glass, glassStrength, setTheme, setAccent, setFont, setGlass, setGlassStrength, reset } =
+    appearance
 
   useEffect(() => {
     if (!open) return
@@ -75,6 +76,54 @@ export function Settings({
                 </button>
               ))}
             </div>
+          </section>
+
+          <section className="settings__group">
+            <h3>Glass</h3>
+            <div className="glass-row">
+              <div className="glass-row__text">
+                <span className="glass-row__label">Liquid glass</span>
+                <span className="glass-row__hint">Backdrop blur on every card, panel and bar.</span>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={glass}
+                aria-label="Toggle liquid glass"
+                className="switch"
+                onClick={() => setGlass(!glass)}
+              >
+                <span className="switch__thumb" />
+              </button>
+            </div>
+
+            {glass ? (
+              <div className="glass-strength">
+                <div className="glass-strength__head">
+                  <span>Blur strength</span>
+                  <output className="glass-strength__value">{glassStrength}%</output>
+                </div>
+                <input
+                  type="range"
+                  min={GLASS_MIN}
+                  max={GLASS_MAX}
+                  step={GLASS_STEP}
+                  value={glassStrength}
+                  aria-label="Glass blur strength"
+                  onChange={(event) => setGlassStrength(Number(event.target.value))}
+                />
+                <div className="glass-strength__scale">
+                  <span>{GLASS_MIN}%</span>
+                  <span>{GLASS_MAX}%</span>
+                </div>
+                <p className="settings__hint">
+                  Blur applies to boxes and controls, not to body text. Raise it until the background reads as frosted
+                  rather than flat.
+                </p>
+              </div>
+            ) : (
+              <p className="settings__hint">Off — surfaces stay solid. Turn it on to frost the backdrop.</p>
+            )}
           </section>
 
           <section className="settings__group">

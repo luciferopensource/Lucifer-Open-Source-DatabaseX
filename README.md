@@ -116,20 +116,44 @@ preferences; all of them apply instantly and are stored in `localStorage`.
 | Mode | Light, Dark | Defaults to the operating-system preference |
 | Colour | Original blue, Emerald, Violet, Amber, Rose, Graphite | Original blue is the default; every palette is defined separately for light and dark so contrast holds in both |
 | Typeface | Grotesk, Editorial, Technical | Display face only — body copy stays on Inter and numbers on JetBrains Mono, so tables never reflow |
+| Glass | On / Off, blur 5–100 % in 5 % steps | iOS-style backdrop blur on every card, panel, bar and control; off by default |
 
-Persistence keys: `lx-theme`, `lx-accent`, `lx-font`. The boot script in `index.html` applies all
-three before the first paint, so there is no flash. **Reset to original** returns to the system
-mode, blue accent and Grotesk type.
+Persistence keys: `lx-theme`, `lx-accent`, `lx-font`, `lx-glass`, `lx-glass-pct`. The boot script in
+`index.html` applies all five before the first paint, so there is no flash. **Reset to original**
+returns to the system mode, blue accent, Grotesk type and glass off.
 
 Adding a palette means adding one CSS block per mode in `src/styles/tokens.css`, one entry in
 `ACCENTS` (`src/lib/theme.ts`) and that is all — no component touches colour directly.
 
+### Liquid glass
+
+`src/styles/glass.css` is the whole feature. It is scoped to `:root[data-glass='on']`, so with glass
+off not a single `backdrop-filter` is declared. Strength maps linearly to pixels:
+
+```
+--glass-blur: calc(var(--glass-pct) * 0.24px)   /* 5 % → 1.2 px, 40 % → 9.6 px, 100 % → 24 px */
+```
+
+One blur per container: `backdrop-filter` is applied to the panel, KPI row, scan strip, archive
+card, sidebar, top bar, footer and the settings drawer. Nested controls (chips, buttons, table
+headers, inner strips) only receive a tint — stacking backdrop filters is expensive and looks
+muddy. Panels that blur also get a top sheen (`--glass-sheen`) and a 1 px inner highlight
+(`--glass-edge`) so the surface reads as glass rather than a faded rectangle.
+
+The backdrop itself is a themed SVG mesh — `public/backgrounds/mesh-dark.svg` and
+`mesh-light.svg` — pinned behind the app as `body::before`, with an accent-tinted radial on top.
+The mesh contains soft bokeh circles on purpose: without defined light shapes there is nothing for
+the blur to diffuse and the effect looks flat. Preferences in `localStorage` are read by the boot
+script (`lx-glass`, `lx-glass-pct`), so the chosen frost survives a reload without a flash.
+
 ## Motion policy
 
 There is exactly one `requestAnimationFrame` loop in the whole project: the cursor layer. No CSS
-transitions, no `@keyframes`, no `backdrop-filter`, no canvas, no smooth scrolling, no hover
-animation. Theme changes and hovers are instant by design. The cursor layer is disabled on coarse
-pointers.
+transitions, no `@keyframes`, no canvas, no smooth scrolling, no hover animation. Theme changes and
+hovers are instant by design. The cursor layer is disabled on coarse pointers.
+
+`backdrop-filter` appears in exactly one file — `src/styles/glass.css` — and only while liquid
+glass is switched on. It is a static property, not an animation.
 
 ---
 

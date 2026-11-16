@@ -50,6 +50,13 @@
           root.dataset.accent = 'blue'
           root.dataset.font = 'grotesk'
         }
+        try {
+          root.dataset.glass = localStorage.getItem('lx-glass') === 'on' ? 'on' : 'off'
+          root.style.setProperty('--glass-pct', localStorage.getItem('lx-glass-pct') || '40')
+        } catch (error) {
+          root.dataset.glass = 'off'
+          root.style.setProperty('--glass-pct', '40')
+        }
       })()
     </script>
   </head>

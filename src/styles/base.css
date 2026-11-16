@@ -19,6 +19,7 @@ html {
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
@@ -28,6 +29,21 @@ body {
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Themed mesh sits behind every surface so glass has something to refract. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(130% 90% at 88% -12%, var(--accent-soft), transparent 62%),
+    var(--page-image);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 #root {
