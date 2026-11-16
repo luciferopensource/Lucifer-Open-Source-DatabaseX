@@ -141,8 +141,13 @@ export function Topbar({ route }: { route: Route }) {
   )
 }
 
-export function Footer() {
+export function Footer({ onOpenGlossary }: { onOpenGlossary: () => void }) {
   const aggregate = getAggregatedDatabase()
+  const built = new Date(__BUILD_TIME__).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
   return (
     <footer className="footer">
       <div className="footer__inner">
@@ -186,6 +191,9 @@ export function Footer() {
           <PageLink className="footer__link" href={routeHref('home')}>
             Overview <span>Living archive</span>
           </PageLink>
+          <button type="button" className="footer__link footer__link--button" onClick={onOpenGlossary}>
+            Glossary <span>Quick reference</span>
+          </button>
         </div>
       </div>
 
@@ -194,7 +202,9 @@ export function Footer() {
           <span>
             © 2026 {OWNER_INFO.entity} · {OWNER_INFO.role}
           </span>
-          <span>Static shell · no canvas · no fabricated records</span>
+          <span>
+            Build <b>{__BUILD_COMMIT__}</b> · {built} · no canvas · no fabricated records
+          </span>
         </div>
       </div>
     </footer>

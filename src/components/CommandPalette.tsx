@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { useFocusTrap } from '../lib/useFocusTrap'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
 import { routeHref } from '../lib/router'
@@ -61,6 +62,8 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
   const [active, setActive] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+  useFocusTrap(panelRef, open)
 
   const results = (() => {
     const needle = query.trim().toLowerCase()
@@ -113,11 +116,6 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       if (command) run(command)
       return
     }
-    if (event.key === 'Tab') {
-      // Keep focus inside the dialog.
-      event.preventDefault()
-      inputRef.current?.focus()
-    }
   }
 
   return (
@@ -129,6 +127,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
         aria-modal="true"
         aria-label="Command palette"
         onKeyDown={onKeyDown}
+        ref={panelRef}
       >
         <div className="palette__input">
           <IconSearch width={15} height={15} />

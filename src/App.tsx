@@ -7,6 +7,7 @@ import { Sidebar, Topbar, Footer } from './components/Shell'
 import { Cursor } from './components/Cursor'
 import { Settings } from './components/Settings'
 import { CommandPalette } from './components/CommandPalette'
+import { GlossaryDialog } from './components/GlossaryDialog'
 import { Home } from './pages/Home'
 import { TotalDatabase } from './pages/TotalDatabase'
 import { Backup } from './pages/Backup'
@@ -28,6 +29,7 @@ export default function App() {
   const appearance = useAppearance()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
+  const [glossaryOpen, setGlossaryOpen] = useState(false)
 
   useEffect(() => {
     document.title = `${TITLES[route]} — Lucifer Database X`
@@ -46,6 +48,7 @@ export default function App() {
       }
       if (event.key === 'Escape') {
         setPaletteOpen(false)
+        setGlossaryOpen(false)
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -74,11 +77,12 @@ export default function App() {
             {route === 'stream-backup-2' && backup2 ? <Backup archive={backup2} index={2} /> : null}
             {route === 'sources' ? <Sources /> : null}
           </main>
-          <Footer />
+          <Footer onOpenGlossary={() => setGlossaryOpen(true)} />
         </div>
       </div>
       <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} appearance={appearance} />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      <GlossaryDialog open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
       <Cursor />
     </StorageUnitProvider>
   )

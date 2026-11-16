@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import type { Appearance } from '../lib/theme'
 import { ACCENTS, FONTS, GLASS_MAX, GLASS_MIN, GLASS_STEP } from '../lib/theme'
+import { useFocusTrap } from '../lib/useFocusTrap'
 import { IconCheck, IconClose, IconMoon, IconSun } from './Icons'
 
 /**
@@ -18,6 +19,8 @@ export function Settings({
 }) {
   const { theme, accent, font, glass, glassStrength, setTheme, setAccent, setFont, setGlass, setGlassStrength, reset } =
     appearance
+  const panelRef = useRef<HTMLElement>(null)
+  useFocusTrap(panelRef, open)
 
   useEffect(() => {
     if (!open) return
@@ -33,7 +36,7 @@ export function Settings({
   return (
     <>
       <div className="settings-scrim" onClick={onClose} />
-      <aside className="settings" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <aside className="settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" ref={panelRef}>
         <header className="settings__head">
           <div>
             <p className="eyebrow">Appearance</p>
