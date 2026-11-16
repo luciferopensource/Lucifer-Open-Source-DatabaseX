@@ -1,0 +1,114 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Print — reports on paper: no shell, no glass, no clipped tables.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@page {
+  margin: 16mm;
+}
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --bg-2: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f5f5f5;
+    --surface-3: #ececec;
+    --text: #000000;
+    --text-2: #171717;
+    --text-3: #444444;
+    --line: #cccccc;
+    --line-2: #b8b8b8;
+    --line-3: #8f8f8f;
+    --accent: #000000;
+    --accent-soft: transparent;
+    --glass-alpha: 100%;
+    --glass-strong: 100%;
+    --glass-blur: 0px;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  :root[data-wallpaper] body::before {
+    background-image: none !important;
+  }
+
+  .sidebar,
+  .topbar,
+  .footer,
+  .cursor-layer,
+  .settings,
+  .settings-scrim,
+  .palette,
+  .palette-scrim,
+  .glossary-dialog,
+  .shortcuts-dialog,
+  .copy-btn,
+  .export-group,
+  .seg,
+  .tabs,
+  .toast {
+    display: none !important;
+  }
+
+  .frame {
+    margin-left: 0 !important;
+  }
+
+  .page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .panel,
+  .snapshot,
+  .archive-card,
+  .kpi-row,
+  .scan-strip,
+  .storage-tile,
+  .contrib,
+  .compare-card,
+  .report-card,
+  .glossary-item {
+    background: #fff !important;
+    border-color: #bbb !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .page-head,
+  .section {
+    margin-top: 16pt;
+  }
+
+  .table-wrap {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .tbl th {
+    position: static;
+    background: #fff !important;
+    color: #000 !important;
+    border-bottom: 1px solid #999;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  .panel,
+  .kpi,
+  .archive-card,
+  .compare-card {
+    break-inside: avoid;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+}

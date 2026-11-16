@@ -1,47 +1,61 @@
 /**
- * URL state for hash routes.
+ * URL state.
  *
- * The app keeps using hash routing (same contract as the source project) but
- * filters, tabs and pagination live in the fragment query string, so any view
- * can be shared as a link:
+ * Pages live on real paths (`/total-database`, `/stream-backup-1/extensions?q=.mkv`)
+ * so links can open in a new tab and each view has a shareable address.
+ * Filters, tabs and pagination live in the query string; writes use
+ * history.replaceState so typing in a filter never floods the back stack.
  *
- *   #/stream-backup-1/extensions?q=.mkv&cat=video&page=3&sort=files
- *
- * Writes use history.replaceState so filtering never floods the back stack,
- * and a custom event keeps every subscriber in sync without a page reload.
+ * Legacy `#/route` fragments are redirected to their path on boot.
  */
 
 const URL_EVENT = 'lx:url'
 
-export interface HashState {
-  /** Path part without the leading `#/`, e.g. `stream-backup-1/extensions`. */
+export interface UrlState {
+  /** Path without leading or trailing slashes: '' for home, 'stream-backup-1/extensions'. */
   base: string
   params: URLSearchParams
 }
 
-export function readHash(hash: string = window.location.hash): HashState {
-  const raw = hash.replace(/^#\/?/, '')
-  const [base, query = ''] = raw.split('?')
-  return { base, params: new URLSearchParams(query) }
+export function readUrl(pathname: string, search: string): UrlState {
+  const base = pathname.replace(/^\/+|\/+$/g, '')
+  return { base, params: new URLSearchParams(search) }
 }
 
-export function hashHref(base: string, params?: URLSearchParams): string {
+export function pathHref(base: string, params?: URLSearchParams): string {
   const query = params?.toString()
-  return `#/${base}${query ? `?${query}` : ''}`
+  return `/${base}${query ? `?${query}` : ''}`
 }
 
-export function replaceHash(base: string, params?: URLSearchParams): void {
-  const next = hashHref(base, params)
-  if (window.location.hash === next) return
-  window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${next}`)
+export function replacePath(base: string, params?: URLSearchParams): void {
+  const next = pathHref(base, params)
+  if (`${window.location.pathname}${window.location.search}` === next) return
+  window.history.replaceState(null, '', next)
   window.dispatchEvent(new Event(URL_EVENT))
 }
 
-export function subscribeHash(callback: () => void): () => void {
-  window.addEventListener('hashchange', callback)
+export function navigateTo(href: string): void {
+  window.history.pushState(null, '', href)
+  window.dispatchEvent(new Event(URL_EVENT))
+  window.scrollTo(0, 0)
+}
+
+export function subscribeUrl(callback: () => void): () => void {
+  window.addEventListener('popstate', callback)
   window.addEventListener(URL_EVENT, callback)
   return () => {
-    window.removeEventListener('hashchange', callback)
+    window.removeEventListener('popstate', callback)
     window.removeEventListener(URL_EVENT, callback)
   }
+}
+
+/**
+ * Turns an old `#/total-database/extensions?q=.mkv` fragment into its path
+ * equivalent. Runs once, before the app mounts.
+ */
+export function migrateLegacyHash(): void {
+  const hash = window.location.hash
+  if (!hash.startsWith('#/')) return
+  const [path, query = ''] = hash.slice(2).split('?')
+  window.history.replaceState(null, '', `/${path}${query ? `?${query}` : ''}`)
 }

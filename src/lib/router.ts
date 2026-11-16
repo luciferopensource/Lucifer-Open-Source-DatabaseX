@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { readHash, subscribeHash } from './url'
+import { readUrl, subscribeUrl } from './url'
 
 export type Route = 'home' | 'total-database' | 'compare' | 'stream-backup-1' | 'stream-backup-2' | 'sources'
 
@@ -14,8 +14,8 @@ export interface Location {
   base: string
 }
 
-export function parseHash(hash: string): Location {
-  const { base, params } = readHash(hash)
+export function parsePath(pathname: string, search: string): Location {
+  const { base, params } = readUrl(pathname, search)
   const segments = base.split('/').filter(Boolean)
   const head = segments[0] ?? ''
   const route = (ROUTES as string[]).includes(head) ? (head as Route) : 'home'
@@ -23,11 +23,13 @@ export function parseHash(hash: string): Location {
 }
 
 export function useLocation(): Location {
-  const [location, setLocation] = useState<Location>(() => parseHash(window.location.hash))
+  const [location, setLocation] = useState<Location>(() =>
+    parsePath(window.location.pathname, window.location.search),
+  )
 
   useEffect(() => {
-    const sync = () => setLocation(parseHash(window.location.hash))
-    return subscribeHash(sync)
+    const sync = () => setLocation(parsePath(window.location.pathname, window.location.search))
+    return subscribeUrl(sync)
   }, [])
 
   return location
@@ -36,5 +38,5 @@ export function useLocation(): Location {
 export function routeHref(route: Route, tab?: string | null, params?: Record<string, string>): string {
   const base = route === 'home' ? '/' : `/${route}${tab ? `/${tab}` : ''}`
   const query = params ? new URLSearchParams(params).toString() : ''
-  return `#${base}${query ? `?${query}` : ''}`
+  return `${base}${query ? `?${query}` : ''}`
 }

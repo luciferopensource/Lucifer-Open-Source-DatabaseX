@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { useLocation } from '../lib/router'
-import { replaceHash } from '../lib/url'
+import { replacePath } from '../lib/url'
 import type { ExtensionRow } from '../lib/view'
 import { Bar } from './ui'
 import { IconChart, IconDownload, IconList, IconSearch, IconTag } from './Icons'
@@ -69,7 +69,7 @@ export function ExtensionLedger({
       if (value === null || value === '') next.delete(key)
       else next.set(key, value)
     }
-    replaceHash(location.base, next)
+    replacePath(location.base, next)
   }
 
   const categories = useMemo(() => ['ALL', ...Array.from(new Set(rows.map((row) => row.category)))], [rows])

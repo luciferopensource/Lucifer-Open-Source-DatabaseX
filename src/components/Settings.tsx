@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { Appearance } from '../lib/theme'
-import { ACCENTS, FONTS, GLASS_MAX, GLASS_MIN, GLASS_STEP } from '../lib/theme'
+import { ACCENTS, DENSITIES, FONTS, GLASS_MAX, GLASS_MIN, GLASS_STEP, TEXT_SIZES, WALLPAPERS } from '../lib/theme'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { IconCheck, IconClose, IconMoon, IconSun } from './Icons'
 
@@ -17,8 +17,25 @@ export function Settings({
   onClose: () => void
   appearance: Appearance
 }) {
-  const { theme, accent, font, glass, glassStrength, setTheme, setAccent, setFont, setGlass, setGlassStrength, reset } =
-    appearance
+  const {
+    theme,
+    accent,
+    font,
+    glass,
+    glassStrength,
+    density,
+    size,
+    wallpaper,
+    setTheme,
+    setAccent,
+    setFont,
+    setGlass,
+    setGlassStrength,
+    setDensity,
+    setSize,
+    setWallpaper,
+    reset,
+  } = appearance
   const panelRef = useRef<HTMLElement>(null)
   useFocusTrap(panelRef, open)
 
@@ -127,6 +144,55 @@ export function Settings({
             ) : (
               <p className="settings__hint">Off — surfaces stay solid. Turn it on to frost the backdrop.</p>
             )}
+          </section>
+
+          <section className="settings__group">
+            <h3>Background</h3>
+            <div className="wallpaper-grid">
+              {WALLPAPERS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={wallpaper === option.id}
+                  onClick={() => setWallpaper(option.id)}
+                  data-wallpaper-preview={option.id}
+                >
+                  <span className="wallpaper-swatch" aria-hidden="true" />
+                  <span>{option.label}</span>
+                </button>
+              ))}
+            </div>
+            <p className="settings__hint">The layer behind the glass. Mesh is the default; plain removes it entirely.</p>
+          </section>
+
+          <section className="settings__group">
+            <h3>Layout</h3>
+            <div className="seg-row">
+              <span className="seg-row__label">Density</span>
+              <div className="mode-grid mode-grid--three">
+                {DENSITIES.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    aria-pressed={density === option.id}
+                    onClick={() => setDensity(option.id)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="seg-row">
+              <span className="seg-row__label">Text size</span>
+              <div className="mode-grid mode-grid--three">
+                {TEXT_SIZES.map((option) => (
+                  <button key={option.id} type="button" aria-pressed={size === option.id} onClick={() => setSize(option.id)}>
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <p className="settings__hint">Text size scales the whole interface; density only tightens spacing.</p>
           </section>
 
           <section className="settings__group">

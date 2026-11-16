@@ -131,3 +131,51 @@
     background: var(--surface);
   }
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Operating-system preferences win over the glass setting.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-glass='on'] {
+    --glass-alpha: 100%;
+    --glass-strong: 100%;
+    --glass-blur: 0px;
+  }
+
+  :root[data-glass='on'] .sidebar,
+  :root[data-glass='on'] .topbar,
+  :root[data-glass='on'] .footer,
+  :root[data-glass='on'] .panel,
+  :root[data-glass='on'] .kpi-row,
+  :root[data-glass='on'] .scan-strip,
+  :root[data-glass='on'] .snapshot,
+  :root[data-glass='on'] .archive-card,
+  :root[data-glass='on'] .contrib,
+  :root[data-glass='on'] .storage-tile,
+  :root[data-glass='on'] .empty,
+  :root[data-glass='on'] .settings,
+  :root[data-glass='on'] .tbl th {
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :root[data-glass='on'] {
+    --glass-blur: 0px;
+  }
+
+  :root[data-glass='on'] .panel,
+  :root[data-glass='on'] .snapshot,
+  :root[data-glass='on'] .archive-card,
+  :root[data-glass='on'] .kpi-row,
+  :root[data-glass='on'] .scan-strip,
+  :root[data-glass='on'] .settings {
+    background: Canvas;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

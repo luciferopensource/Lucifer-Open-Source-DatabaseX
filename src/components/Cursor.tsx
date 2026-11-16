@@ -15,6 +15,8 @@ export function Cursor() {
 
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches) return
+    // Respect the operating system's reduce-motion preference: no cursor loop at all.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const dot = dotRef.current
     const ring = ringRef.current

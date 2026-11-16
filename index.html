@@ -21,12 +21,12 @@
       content="Verified scan telemetry for the Lucifer media fleet: 1,948,083 indexed files, 1,654.24 TB across two channel archives."
     />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Self-hosted webfonts: no third-party requests at runtime. -->
+    <link rel="preload" href="/fonts/inter-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-500-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-grotesk-500-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <script>
       // Resolve appearance (mode, accent, font) before first paint — no flash.
@@ -56,6 +56,15 @@
         } catch (error) {
           root.dataset.glass = 'off'
           root.style.setProperty('--glass-pct', '40')
+        }
+        try {
+          root.dataset.density = localStorage.getItem('lx-density') || 'comfortable'
+          root.dataset.size = localStorage.getItem('lx-size') || 'md'
+          root.dataset.wallpaper = localStorage.getItem('lx-wallpaper') || 'mesh'
+        } catch (error) {
+          root.dataset.density = 'comfortable'
+          root.dataset.size = 'md'
+          root.dataset.wallpaper = 'mesh'
         }
       })()
     </script>

@@ -3,6 +3,7 @@ import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO } from '../data/channelIntelligenceData'
 import { UnitConverter } from '../components/Converter'
 import { PageLink } from '../components/PageLink'
+import { CopyButton } from '../components/CopyButton'
 import { routeHref } from '../lib/router'
 import { GLOSSARY } from '../lib/glossary'
 import { Panel, Pill, StatusPill } from '../components/ui'
@@ -62,11 +63,17 @@ export function Sources() {
               <dl className="report-card__meta">
                 <div>
                   <dt>Channel ID</dt>
-                  <dd>{archive.channelId}</dd>
+                  <dd className="meta-copy">
+                    {archive.channelId}
+                    <CopyButton value={archive.channelId ?? ''} label="channel ID" />
+                  </dd>
                 </div>
                 <div>
                   <dt>Scan ID</dt>
-                  <dd>{archive.scanId}</dd>
+                  <dd className="meta-copy">
+                    {archive.scanId}
+                    <CopyButton value={archive.scanId} label="scan ID" />
+                  </dd>
                 </div>
                 <div>
                   <dt>Completed</dt>

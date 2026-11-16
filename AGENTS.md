@@ -67,3 +67,32 @@ only, or the effect turns muddy and the compositor budget dies.
 
 Local repository on branch `main`. Commit only finished, verified work. `.gitignore` keeps
 `node_modules/`, `dist/` and `.vite/` out of history.
+
+## Routing and links (added 2026-11-17)
+
+* Pages are real paths served by the SPA fallback: `/`, `/total-database`, `/compare`,
+  `/stream-backup-1`, `/stream-backup-2`, `/sources`. Never reintroduce `#/` routing; legacy
+  fragments are migrated once in `src/lib/url.ts`.
+* Every page-to-page link uses `PageLink` so it opens in a new tab. In-page controls stay buttons.
+* New filters or tabs must be addressable through the query string (`replacePath`) — if a view cannot
+  be linked, it is not finished.
+* Adding a route means updating **four** places: `Route` in `src/lib/router.ts`, `NAV` and
+  `PAGE_TITLES` in `Shell.tsx`, the switch in `App.tsx`, and `ROUTES` in `scripts/prerender.mjs`.
+
+## Build scripts
+
+* `npm run build` runs `postbuild` → `scripts/prerender.mjs`, which needs `dist/route-meta.json`
+  (emitted by the `route-meta` Vite plugin from the datasets). Never hand-write those numbers.
+* Fonts are self-hosted (`public/fonts` + `src/styles/fonts.css`). Run
+  `node scripts/fetch-fonts.mjs` only when the family/weight list changes; it touches the network,
+  the normal build never does.
+* The service worker (`public/sw.js`) is cache-first for assets and network-first for navigation.
+  Bump `CACHE_VERSION` whenever the shell changes materially.
+
+## Accessibility rules
+
+* `prefers-reduced-motion` disables the cursor layer; `prefers-reduced-transparency` and
+  `forced-colors` disable glass. Test all three before shipping.
+* Dialogs use `useFocusTrap`; Esc must close, and focus must return to the trigger.
+* `?` opens shortcuts — ignore it while an input, textarea, select or contenteditable has focus.
+* Print styles are part of the contract: run a print preview on a report page after layout changes.

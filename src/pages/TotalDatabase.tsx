@@ -1,6 +1,6 @@
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { useLocation, routeHref } from '../lib/router'
-import { replaceHash } from '../lib/url'
+import { replacePath } from '../lib/url'
 import { PageLink } from '../components/PageLink'
 import { ExtensionLedger } from '../components/ExtensionLedger'
 import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
@@ -28,7 +28,7 @@ const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions']
 export function TotalDatabase() {
   const location = useLocation()
   const tab: TabId = (TAB_IDS as string[]).includes(location.tab ?? '') ? (location.tab as TabId) : 'channel'
-  const setTab = (id: string) => replaceHash(`total-database/${id}`, location.params)
+  const setTab = (id: string) => replacePath(`total-database/${id}`, location.params)
   const aggregate = getAggregatedDatabase()
   const { formatString } = useStorageUnit()
 

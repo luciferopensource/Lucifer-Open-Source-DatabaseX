@@ -141,7 +141,13 @@ export function Topbar({ route }: { route: Route }) {
   )
 }
 
-export function Footer({ onOpenGlossary }: { onOpenGlossary: () => void }) {
+export function Footer({
+  onOpenGlossary,
+  onOpenShortcuts,
+}: {
+  onOpenGlossary: () => void
+  onOpenShortcuts: () => void
+}) {
   const aggregate = getAggregatedDatabase()
   const built = new Date(__BUILD_TIME__).toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -193,6 +199,9 @@ export function Footer({ onOpenGlossary }: { onOpenGlossary: () => void }) {
           </PageLink>
           <button type="button" className="footer__link footer__link--button" onClick={onOpenGlossary}>
             Glossary <span>Quick reference</span>
+          </button>
+          <button type="button" className="footer__link footer__link--button" onClick={onOpenShortcuts}>
+            Shortcuts <span>Press ?</span>
           </button>
         </div>
       </div>

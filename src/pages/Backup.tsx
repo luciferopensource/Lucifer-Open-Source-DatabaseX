@@ -1,7 +1,8 @@
 import type { ArchiveRecord } from '../data/archiveSchemas'
 import { useLocation, routeHref } from '../lib/router'
-import { replaceHash } from '../lib/url'
+import { replacePath } from '../lib/url'
 import { PageLink } from '../components/PageLink'
+import { CopyButton } from '../components/CopyButton'
 import { ExtensionLedger } from '../components/ExtensionLedger'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { categoriesFromDataset, extensionsFromDataset, resolutionFromDataset } from '../lib/view'
@@ -27,7 +28,7 @@ const REPORT_META: { key: 'channelAnalysisScanRecord' | 'resolutionScanRecord' |
 export function Backup({ archive, index }: { archive: ArchiveRecord; index: number }) {
   const location = useLocation()
   const tab: TabId = (TAB_IDS as string[]).includes(location.tab ?? '') ? (location.tab as TabId) : 'channel'
-  const setTab = (id: string) => replaceHash(`${archive.route}/${id}`, location.params)
+  const setTab = (id: string) => replacePath(`${archive.route}/${id}`, location.params)
   const dataset = archive.dataset
   const { formatString } = useStorageUnit()
 
@@ -57,7 +58,10 @@ export function Backup({ archive, index }: { archive: ArchiveRecord; index: numb
           </div>
           <dl className="page-head__meta">
             <dt>Channel ID</dt>
-            <dd>{target.channelId}</dd>
+            <dd className="meta-copy">
+              {target.channelId}
+              <CopyButton value={target.channelId} label="channel ID" />
+            </dd>
             <dt>Scanner</dt>
             <dd>{target.scanner}</dd>
             <dt>Completed</dt>

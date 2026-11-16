@@ -165,6 +165,10 @@ svg {
   max-width: 52ch;
 }
 
+.page-loading {
+  min-height: 62vh;
+}
+
 /* ── Buttons ──────────────────────────────────────────────────────────────── */
 
 .btn {
@@ -323,4 +327,72 @@ svg {
 .section__title,
 .brand__name {
   overflow-wrap: anywhere;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Density and text size — presentation preferences from the settings drawer.
+   Text size scales the root so every rem-based metric follows; compact trims
+   the vertical rhythm without touching type.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root[data-size='sm'] {
+  font-size: 15px;
+}
+
+:root[data-size='lg'] {
+  font-size: 17.5px;
+}
+
+:root[data-density='compact'] .page {
+  padding-top: 28px;
+  padding-bottom: 64px;
+}
+
+:root[data-density='compact'] .section {
+  margin-top: 44px;
+}
+
+:root[data-density='compact'] .panel__head {
+  padding: 12px 16px;
+}
+
+:root[data-density='compact'] .panel__body {
+  padding: 14px;
+}
+
+:root[data-density='compact'] .kpi {
+  padding: 14px 16px;
+}
+
+:root[data-density='compact'] .tbl th {
+  padding: 9px 20px;
+}
+
+:root[data-density='compact'] .tbl td {
+  padding: 6px 20px;
+}
+
+:root[data-density='compact'] .archive-card,
+:root[data-density='compact'] .snapshot,
+:root[data-density='compact'] .compare-card,
+:root[data-density='compact'] .report-card,
+:root[data-density='compact'] .storage-tile,
+:root[data-density='compact'] .contrib {
+  padding: 16px;
+}
+
+:root[data-density='compact'] .cat-row,
+:root[data-density='compact'] .res-row {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+:root[data-density='compact'] .hero {
+  padding-top: 30px;
+  padding-bottom: 38px;
+}
+
+:root[data-density='compact'] .hero__stats {
+  margin-top: 28px;
 }

@@ -3,6 +3,7 @@ import { useFocusTrap } from '../lib/useFocusTrap'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
 import { routeHref } from '../lib/router'
+import { navigateTo } from '../lib/url'
 import { IconSearch } from './Icons'
 
 interface Command {
@@ -91,7 +92,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
 
   const run = (command: Command) => {
     onClose()
-    window.location.hash = command.href.replace(/^#/, '')
+    navigateTo(command.href)
   }
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {

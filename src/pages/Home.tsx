@@ -1,6 +1,7 @@
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { routeHref, type Route } from '../lib/router'
 import { PageLink } from '../components/PageLink'
+import { CopyButton } from '../components/CopyButton'
 import { getAllArchives, getPaginatedArchives } from '../data/archiveRegistry'
 import { CATALOG_ENTRIES } from '../data/catalog'
 import { useStorageUnit } from '../data/storageUnitContext'
@@ -159,9 +160,12 @@ export function Home() {
                 <StatusPill status={archive.status} />
               </div>
               <h3>{archive.displayName}</h3>
-              <p className="archive-card__id">
-                {archive.channelId} · {archive.scanId}
-              </p>
+              <div className="archive-card__idrow">
+                <p className="archive-card__id">
+                  {archive.channelId} · {archive.scanId}
+                </p>
+                <CopyButton value={`${archive.channelId} · ${archive.scanId}`} label="channel and scan reference" />
+              </div>
 
               <dl className="archive-card__stats">
                 <div>
