@@ -16,7 +16,7 @@
 
 :root[data-glass='on'] .sidebar,
 :root[data-glass='on'] .footer {
-  background: color-mix(in srgb, var(--bg-2) var(--glass-strong), transparent);
+  background: color-mix(in srgb, var(--bg-2) var(--glass-alpha), transparent);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   backdrop-filter: blur(var(--glass-blur)) saturate(150%);
 }
