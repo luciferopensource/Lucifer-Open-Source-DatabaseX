@@ -1,5 +1,8 @@
-import { useState } from 'react'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
+import { useLocation, routeHref } from '../lib/router'
+import { replaceHash } from '../lib/url'
+import { PageLink } from '../components/PageLink'
+import { ExtensionLedger } from '../components/ExtensionLedger'
 import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
 import { useStorageUnit } from '../data/storageUnitContext'
 import {
@@ -13,7 +16,6 @@ import { Kpi, Panel, Pill, StatusPill, TabPanel, Tabs } from '../components/ui'
 import {
   CategoryMatrix,
   ContributionCards,
-  ExtensionsReport,
   ResolutionReport,
   ScanStrip,
   StorageReport,
@@ -21,9 +23,12 @@ import {
 import { IconArrowLeft, IconDatabase, IconShield } from '../components/Icons'
 
 type TabId = 'channel' | 'resolution' | 'storage' | 'extensions'
+const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions']
 
 export function TotalDatabase() {
-  const [tab, setTab] = useState<TabId>('channel')
+  const location = useLocation()
+  const tab: TabId = (TAB_IDS as string[]).includes(location.tab ?? '') ? (location.tab as TabId) : 'channel'
+  const setTab = (id: string) => replaceHash(`total-database/${id}`, location.params)
   const aggregate = getAggregatedDatabase()
   const { formatString } = useStorageUnit()
 
@@ -36,9 +41,9 @@ export function TotalDatabase() {
   return (
     <>
       <div className="page-head">
-        <a className="backlink" href="#/">
+        <PageLink className="backlink" href={routeHref('home')}>
           <IconArrowLeft width={13} height={13} /> Overview
-        </a>
+        </PageLink>
         <div className="page-head__row">
           <div>
             <p className="eyebrow">Sovereign unified intelligence core</p>
@@ -75,7 +80,7 @@ export function TotalDatabase() {
       <Tabs
         label="Aggregate reports"
         value={tab}
-        onChange={(id) => setTab(id as TabId)}
+        onChange={setTab}
         items={[
           { id: 'channel', label: 'Channel analysis', count: `${aggregate.categoryBreakdown.length}` },
           { id: 'resolution', label: 'Resolution intelligence', count: `${resolution.length}` },
@@ -152,8 +157,9 @@ export function TotalDatabase() {
       </TabPanel>
 
       <TabPanel id="extensions" active={tab}>
-        <ExtensionsReport
+        <ExtensionLedger
           rows={extensions}
+          scope="total-database"
           summary={{
             files: aggregate.extensionIntelligence.totalFilesAnalysed,
             unique: aggregate.extensionIntelligence.uniqueExtensionsCount,

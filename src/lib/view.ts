@@ -12,6 +12,11 @@ export function toPercentage(value: string): number {
   return Number.isFinite(parsed) ? parsed : 0
 }
 
+/** "1,929,416" → 1929416. Used when two datasets must be compared numerically. */
+export function parseCount(value: string): number {
+  return parseInt(value.replace(/[^\d]/g, ''), 10) || 0
+}
+
 /** Adds "2h 52m 25s" + "2h 43m 48s" = "5h 36m 13s" without hard-coding a total. */
 export function sumDurations(values: string[]): string {
   let totalSeconds = 0

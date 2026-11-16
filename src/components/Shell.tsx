@@ -1,23 +1,29 @@
 import type { Route } from '../lib/router'
+import { routeHref } from '../lib/router'
+import { PageLink } from './PageLink'
 import type { Appearance } from '../lib/theme'
 import { ACCENTS } from '../lib/theme'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO, TELEGRAM_COMMUNITY_LINKS } from '../data/channelIntelligenceData'
 import { useStorageUnit, type StorageUnit } from '../data/storageUnitContext'
-import { IconDatabase, IconFilm, IconGrid, IconSettings } from './Icons'
+import { IconChart, IconDatabase, IconFilm, IconGrid, IconSearch, IconSettings, IconShield } from './Icons'
 
 const NAV: { route: Route; label: string; index: string; Icon: typeof IconGrid }[] = [
   { route: 'home', label: 'Overview', index: '00', Icon: IconGrid },
   { route: 'total-database', label: 'Total Database', index: '01', Icon: IconDatabase },
-  { route: 'stream-backup-1', label: 'Backup 01', index: '02', Icon: IconFilm },
-  { route: 'stream-backup-2', label: 'Backup 02', index: '03', Icon: IconFilm },
+  { route: 'compare', label: 'Compare', index: '02', Icon: IconChart },
+  { route: 'stream-backup-1', label: 'Backup 01', index: '03', Icon: IconFilm },
+  { route: 'stream-backup-2', label: 'Backup 02', index: '04', Icon: IconFilm },
+  { route: 'sources', label: 'Sources', index: '05', Icon: IconShield },
 ]
 
 const PAGE_TITLES: Record<Route, string> = {
   home: 'Overview',
   'total-database': 'Total Database',
+  compare: 'Compare Channels',
   'stream-backup-1': 'Stream Backup 01',
   'stream-backup-2': 'Stream Backup 02',
+  sources: 'Sources & Method',
 }
 
 function BrandMark() {
@@ -34,10 +40,12 @@ export function Sidebar({
   route,
   appearance,
   onOpenSettings,
+  onOpenPalette,
 }: {
   route: Route
   appearance: Appearance
   onOpenSettings: () => void
+  onOpenPalette: () => void
 }) {
   const { unit, setUnit } = useStorageUnit()
   const aggregate = getAggregatedDatabase()
@@ -46,7 +54,7 @@ export function Sidebar({
 
   return (
     <aside className="sidebar">
-      <a className="brand" href="#/">
+      <PageLink className="brand" href={routeHref('home')}>
         <span className="brand__mark">
           <BrandMark />
         </span>
@@ -54,21 +62,27 @@ export function Sidebar({
           <span className="brand__name">Lucifer Database X</span>
           <span className="brand__meta">Sovereign media index</span>
         </span>
-      </a>
+      </PageLink>
+
+      <button type="button" className="nav__search" onClick={onOpenPalette}>
+        <IconSearch width={14} height={14} />
+        Search everything
+        <kbd>⌘K</kbd>
+      </button>
 
       <nav className="nav" aria-label="Primary">
         <span className="nav__label">Workspace</span>
         {NAV.map((item) => (
-          <a
+          <PageLink
             key={item.route}
             className={route === item.route ? 'nav__item is-active' : 'nav__item'}
-            href={item.route === 'home' ? '#/' : `#${item.route}`}
+            href={routeHref(item.route)}
             aria-current={route === item.route ? 'page' : undefined}
           >
             <item.Icon />
             {item.label}
             <span className="nav__index">{item.index}</span>
-          </a>
+          </PageLink>
         ))}
       </nav>
 
@@ -154,18 +168,24 @@ export function Footer() {
 
         <div className="footer__col">
           <h4>Reports</h4>
-          <a className="footer__link" href="#total-database">
+          <PageLink className="footer__link" href={routeHref('total-database')}>
             Total Database <span>Aggregate</span>
-          </a>
-          <a className="footer__link" href="#stream-backup-1">
+          </PageLink>
+          <PageLink className="footer__link" href={routeHref('compare')}>
+            Compare channels <span>Head to head</span>
+          </PageLink>
+          <PageLink className="footer__link" href={routeHref('stream-backup-1')}>
             Backup 01 <span>LMS-4D0E-6C2A</span>
-          </a>
-          <a className="footer__link" href="#stream-backup-2">
+          </PageLink>
+          <PageLink className="footer__link" href={routeHref('stream-backup-2')}>
             Backup 02 <span>LMS-94E3-7DE1</span>
-          </a>
-          <a className="footer__link" href="#/">
+          </PageLink>
+          <PageLink className="footer__link" href={routeHref('sources')}>
+            Sources &amp; method <span>Provenance</span>
+          </PageLink>
+          <PageLink className="footer__link" href={routeHref('home')}>
             Overview <span>Living archive</span>
-          </a>
+          </PageLink>
         </div>
       </div>
 

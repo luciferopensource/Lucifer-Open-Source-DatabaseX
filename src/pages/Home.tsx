@@ -1,4 +1,6 @@
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
+import { routeHref, type Route } from '../lib/router'
+import { PageLink } from '../components/PageLink'
 import { getAllArchives, getPaginatedArchives } from '../data/archiveRegistry'
 import { CATALOG_ENTRIES } from '../data/catalog'
 import { useStorageUnit } from '../data/storageUnitContext'
@@ -39,13 +41,16 @@ export function Home() {
             </p>
 
             <div className="hero__actions">
-              <a className="btn btn--primary" href="#stream-backup-1">
+              <PageLink className="btn btn--primary" href={routeHref('stream-backup-1')}>
                 <IconPlay width={15} height={15} />
                 Stream movies now
-              </a>
-              <a className="btn btn--ghost" href="#total-database">
+              </PageLink>
+              <PageLink className="btn btn--ghost" href={routeHref('total-database')}>
                 Open total database
-              </a>
+              </PageLink>
+              <PageLink className="btn btn--ghost" href={routeHref('compare')}>
+                Compare channels
+              </PageLink>
             </div>
 
             <dl className="hero__stats">
@@ -148,7 +153,7 @@ export function Home() {
 
         <div className="archive-grid">
           {archives.map((archive) => (
-            <a className="archive-card" key={archive.id} href={`#${archive.route}`}>
+            <PageLink className="archive-card" key={archive.id} href={routeHref(archive.route as Route)}>
               <div className="archive-card__top">
                 <span className="archive-card__index">Archive #{String(archive.sequence).padStart(2, '0')}</span>
                 <StatusPill status={archive.status} />
@@ -176,7 +181,7 @@ export function Home() {
               <span className="archive-card__cta">
                 Inspect channel vault <IconArrowRight width={14} height={14} />
               </span>
-            </a>
+            </PageLink>
           ))}
         </div>
 

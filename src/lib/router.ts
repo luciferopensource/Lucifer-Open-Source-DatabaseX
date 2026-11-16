@@ -1,25 +1,40 @@
 import { useEffect, useState } from 'react'
+import { readHash, subscribeHash } from './url'
 
-export type Route = 'home' | 'total-database' | 'stream-backup-1' | 'stream-backup-2'
+export type Route = 'home' | 'total-database' | 'compare' | 'stream-backup-1' | 'stream-backup-2' | 'sources'
 
-const ROUTES: Route[] = ['home', 'total-database', 'stream-backup-1', 'stream-backup-2']
+const ROUTES: Route[] = ['home', 'total-database', 'compare', 'stream-backup-1', 'stream-backup-2', 'sources']
 
-function parseHash(hash: string): Route {
-  const key = hash.replace(/^#\/?/, '')
-  return (ROUTES as string[]).includes(key) ? (key as Route) : 'home'
+export interface Location {
+  route: Route
+  /** Second path segment, e.g. the report tab: `extensions`. */
+  tab: string | null
+  params: URLSearchParams
+  /** Full path part, needed when only the query string changes. */
+  base: string
 }
 
-export function useRoute(): Route {
-  const [route, setRoute] = useState<Route>(() => parseHash(window.location.hash))
+export function parseHash(hash: string): Location {
+  const { base, params } = readHash(hash)
+  const segments = base.split('/').filter(Boolean)
+  const head = segments[0] ?? ''
+  const route = (ROUTES as string[]).includes(head) ? (head as Route) : 'home'
+  return { route, tab: segments[1] ?? null, params, base }
+}
+
+export function useLocation(): Location {
+  const [location, setLocation] = useState<Location>(() => parseHash(window.location.hash))
 
   useEffect(() => {
-    const onHashChange = () => {
-      setRoute(parseHash(window.location.hash))
-      window.scrollTo(0, 0)
-    }
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
+    const sync = () => setLocation(parseHash(window.location.hash))
+    return subscribeHash(sync)
   }, [])
 
-  return route
+  return location
+}
+
+export function routeHref(route: Route, tab?: string | null, params?: Record<string, string>): string {
+  const base = route === 'home' ? '/' : `/${route}${tab ? `/${tab}` : ''}`
+  const query = params ? new URLSearchParams(params).toString() : ''
+  return `#${base}${query ? `?${query}` : ''}`
 }

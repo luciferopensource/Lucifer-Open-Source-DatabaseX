@@ -1,11 +1,13 @@
-import { useState } from 'react'
 import type { ArchiveRecord } from '../data/archiveSchemas'
+import { useLocation, routeHref } from '../lib/router'
+import { replaceHash } from '../lib/url'
+import { PageLink } from '../components/PageLink'
+import { ExtensionLedger } from '../components/ExtensionLedger'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { categoriesFromDataset, extensionsFromDataset, resolutionFromDataset } from '../lib/view'
 import { Kpi, Panel, Pill, TabPanel, Tabs } from '../components/ui'
 import {
   CategoryMatrix,
-  ExtensionsReport,
   ResolutionReport,
   ScanStrip,
   StorageReport,
@@ -13,6 +15,7 @@ import {
 import { IconArrowLeft, IconDatabase, IconShield } from '../components/Icons'
 
 type TabId = 'channel' | 'resolution' | 'storage' | 'extensions'
+const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions']
 
 const REPORT_META: { key: 'channelAnalysisScanRecord' | 'resolutionScanRecord' | 'storageScanRecord' | 'extensionScanRecord'; label: string }[] = [
   { key: 'channelAnalysisScanRecord', label: 'Channel analysis' },
@@ -22,7 +25,9 @@ const REPORT_META: { key: 'channelAnalysisScanRecord' | 'resolutionScanRecord' |
 ]
 
 export function Backup({ archive, index }: { archive: ArchiveRecord; index: number }) {
-  const [tab, setTab] = useState<TabId>('channel')
+  const location = useLocation()
+  const tab: TabId = (TAB_IDS as string[]).includes(location.tab ?? '') ? (location.tab as TabId) : 'channel'
+  const setTab = (id: string) => replaceHash(`${archive.route}/${id}`, location.params)
   const dataset = archive.dataset
   const { formatString } = useStorageUnit()
 
@@ -36,9 +41,9 @@ export function Backup({ archive, index }: { archive: ArchiveRecord; index: numb
   return (
     <>
       <div className="page-head">
-        <a className="backlink" href="#/">
+        <PageLink className="backlink" href={routeHref('home')}>
           <IconArrowLeft width={13} height={13} /> Overview
-        </a>
+        </PageLink>
         <div className="page-head__row">
           <div>
             <p className="eyebrow">
@@ -86,7 +91,7 @@ export function Backup({ archive, index }: { archive: ArchiveRecord; index: numb
       <Tabs
         label={`${archive.displayName} reports`}
         value={tab}
-        onChange={(id) => setTab(id as TabId)}
+        onChange={setTab}
         items={[
           { id: 'channel', label: 'Channel analysis', count: `${categories.length}` },
           { id: 'resolution', label: 'Resolution intelligence', count: `${resolution.length}` },
@@ -155,8 +160,9 @@ export function Backup({ archive, index }: { archive: ArchiveRecord; index: numb
       </TabPanel>
 
       <TabPanel id="extensions" active={tab}>
-        <ExtensionsReport
+        <ExtensionLedger
           rows={extensions}
+          scope={`backup-${index}`}
           summary={{
             files: dataset.extensionSummary.totalFilesAnalysed,
             unique: dataset.extensionSummary.uniqueExtensions,
