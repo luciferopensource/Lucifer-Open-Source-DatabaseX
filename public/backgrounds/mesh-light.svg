@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Light paper mesh">
   <defs>
     <radialGradient id="base" cx="46%" cy="8%" r="100%">
-      <stop offset="0" stop-color="#ffffff" />
-      <stop offset="0.55" stop-color="#f5f7fa" />
-      <stop offset="1" stop-color="#e9eef4" />
+      <stop offset="0" stop-color="#fdfeff" />
+      <stop offset="0.55" stop-color="#eef3fa" />
+      <stop offset="1" stop-color="#e2eaf5" />
     </radialGradient>
     <radialGradient id="vignette" cx="50%" cy="45%" r="78%">
-      <stop offset="0.6" stop-color="#0c1116" stop-opacity="0" />
-      <stop offset="1" stop-color="#0c1116" stop-opacity="0.09" />
+      <stop offset="0.55" stop-color="#0c1116" stop-opacity="0" />
+      <stop offset="1" stop-color="#0c1116" stop-opacity="0.12" />
     </radialGradient>
     <linearGradient id="streak" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#7ea6ff" stop-opacity="0" />
-      <stop offset="0.5" stop-color="#7ea6ff" stop-opacity="0.22" />
-      <stop offset="1" stop-color="#7ea6ff" stop-opacity="0" />
+      <stop offset="0" stop-color="#6f9bff" stop-opacity="0" />
+      <stop offset="0.5" stop-color="#6f9bff" stop-opacity="0.3" />
+      <stop offset="1" stop-color="#6f9bff" stop-opacity="0" />
     </linearGradient>
     <filter id="wide" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="105" />
@@ -30,43 +30,44 @@
 
   <rect width="1600" height="1000" fill="url(#base)" />
 
+  <!-- Deeper, more saturated colour fields: white frost needs something to hide. -->
   <g filter="url(#wide)">
-    <circle cx="220" cy="150" r="310" fill="#c4d8ff" opacity="0.85" />
-    <circle cx="1240" cy="90" r="340" fill="#c2ebe2" opacity="0.8" />
-    <circle cx="1480" cy="790" r="360" fill="#e4d8f8" opacity="0.78" />
-    <circle cx="520" cy="930" r="330" fill="#f7e3ca" opacity="0.7" />
-    <circle cx="900" cy="430" r="220" fill="#d9e3f5" opacity="0.55" />
+    <circle cx="200" cy="140" r="330" fill="#a9c9ff" opacity="0.95" />
+    <circle cx="1250" cy="80" r="360" fill="#8fdfcd" opacity="0.9" />
+    <circle cx="1480" cy="800" r="380" fill="#cdb2f5" opacity="0.9" />
+    <circle cx="500" cy="940" r="340" fill="#ffd0a1" opacity="0.82" />
+    <circle cx="900" cy="430" r="240" fill="#b7cdf0" opacity="0.7" />
   </g>
 
-  <g filter="url(#streakBlur)" opacity="0.8">
+  <g filter="url(#streakBlur)" opacity="0.9">
     <rect x="140" y="200" width="880" height="60" fill="url(#streak)" transform="rotate(-18 580 230)" />
     <rect x="660" y="720" width="800" height="48" fill="url(#streak)" transform="rotate(-14 1060 744)" opacity="0.7" />
   </g>
 
   <!-- Defined bokeh for the frosted panels to smear. -->
   <g filter="url(#bokeh)">
-    <circle cx="1020" cy="630" r="94" fill="#ffffff" opacity="0.95" />
-    <circle cx="1170" cy="510" r="54" fill="#dfe9ff" opacity="0.8" />
-    <circle cx="350" cy="520" r="78" fill="#ffffff" opacity="0.9" />
-    <circle cx="470" cy="360" r="38" fill="#e6f7f2" opacity="0.85" />
-    <circle cx="1330" cy="310" r="86" fill="#efe6ff" opacity="0.85" />
-    <circle cx="1440" cy="460" r="46" fill="#ffffff" opacity="0.9" />
-    <circle cx="690" cy="210" r="64" fill="#fdeeda" opacity="0.85" />
-    <circle cx="180" cy="770" r="72" fill="#ffffff" opacity="0.92" />
-    <circle cx="870" cy="850" r="58" fill="#eae2ff" opacity="0.8" />
-    <circle cx="1290" cy="870" r="40" fill="#ffffff" opacity="0.9" />
+    <circle cx="1020" cy="630" r="98" fill="#ffffff" opacity="0.98" />
+    <circle cx="1170" cy="510" r="56" fill="#9dc0ff" opacity="0.8" />
+    <circle cx="350" cy="520" r="82" fill="#ffffff" opacity="0.95" />
+    <circle cx="470" cy="360" r="40" fill="#8fe3d1" opacity="0.85" />
+    <circle cx="1330" cy="310" r="90" fill="#c9aef7" opacity="0.9" />
+    <circle cx="1440" cy="460" r="48" fill="#ffffff" opacity="0.95" />
+    <circle cx="690" cy="210" r="66" fill="#ffc9a2" opacity="0.9" />
+    <circle cx="180" cy="770" r="76" fill="#ffffff" opacity="0.95" />
+    <circle cx="870" cy="850" r="60" fill="#c8b6ff" opacity="0.85" />
+    <circle cx="1290" cy="870" r="42" fill="#ffffff" opacity="0.95" />
   </g>
 
-  <g filter="url(#mid)" opacity="0.45">
-    <circle cx="600" cy="650" r="140" fill="#a9c4f5" opacity="0.5" />
-    <circle cx="1500" cy="150" r="120" fill="#a8ded2" opacity="0.45" />
+  <g filter="url(#mid)" opacity="0.6">
+    <circle cx="600" cy="650" r="150" fill="#7ea8f0" opacity="0.55" />
+    <circle cx="1500" cy="150" r="130" fill="#79d3bf" opacity="0.5" />
   </g>
 
   <g opacity="0.9">
-    <circle cx="1080" cy="330" r="14" fill="#ffffff" opacity="0.95" />
-    <circle cx="420" cy="700" r="10" fill="#eaf3ff" opacity="0.9" />
-    <circle cx="1360" cy="620" r="12" fill="#f2ecff" opacity="0.9" />
-    <circle cx="760" cy="120" r="8" fill="#ffffff" opacity="0.95" />
+    <circle cx="1080" cy="330" r="15" fill="#ffffff" opacity="0.98" />
+    <circle cx="420" cy="700" r="11" fill="#eaf3ff" opacity="0.95" />
+    <circle cx="1360" cy="620" r="13" fill="#f2ecff" opacity="0.95" />
+    <circle cx="760" cy="120" r="9" fill="#ffffff" opacity="0.98" />
   </g>
 
   <rect width="1600" height="1000" fill="url(#vignette)" />

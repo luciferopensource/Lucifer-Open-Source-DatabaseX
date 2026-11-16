@@ -98,16 +98,21 @@ export function Sidebar({
           <span className="appearance-trigger__dot" aria-hidden="true" />
         </button>
 
-        <label className="unit">
+        <div className="unit">
           <span className="unit__label">Storage unit</span>
-          <select value={unit} onChange={(event) => setUnit(event.target.value as StorageUnit)}>
-            <option value="AUTO">AUTO</option>
-            <option value="PB">PB</option>
-            <option value="TB">TB</option>
-            <option value="GB">GB</option>
-            <option value="MB">MB</option>
-          </select>
-        </label>
+          <div className="unit__chips" role="group" aria-label="Storage unit">
+            {(['AUTO', 'PB', 'TB', 'GB', 'MB'] as StorageUnit[]).map((option) => (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={unit === option}
+                onClick={() => setUnit(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className="status-line">
           <span className="status-line__dot" />

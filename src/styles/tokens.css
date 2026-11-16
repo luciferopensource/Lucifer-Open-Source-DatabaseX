@@ -72,6 +72,8 @@
   --glass-strong: 66%;
   --glass-sheen: rgba(255, 255, 255, 0.09);
   --glass-edge: rgba(255, 255, 255, 0.16);
+  --glass-tint: transparent;
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 :root[data-theme='light'] {
@@ -83,7 +85,7 @@
 
   --text: #0c1116;
   --text-2: #39434f;
-  --text-3: #525d6a;
+  --text-3: #4d5764;
 
   --line: #e3e7eb;
   --line-2: #d2d8df;
@@ -109,10 +111,12 @@
   --invert-track: rgba(12, 17, 22, 0.07);
 
   --page-image: url('/backgrounds/mesh-light.svg');
-  --glass-alpha: 58%;
-  --glass-strong: 72%;
-  --glass-sheen: rgba(255, 255, 255, 0.7);
-  --glass-edge: rgba(255, 255, 255, 0.9);
+  --glass-alpha: 52%;
+  --glass-strong: 64%;
+  --glass-sheen: rgba(255, 255, 255, 0.6);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --glass-tint: color-mix(in srgb, var(--accent) 7%, transparent);
+  --glass-border: rgba(12, 17, 22, 0.11);
 }
 
 
