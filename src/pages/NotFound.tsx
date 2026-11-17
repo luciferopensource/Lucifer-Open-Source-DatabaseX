@@ -12,8 +12,8 @@ export function NotFound() {
       <p className="eyebrow">Error 404</p>
       <h1>This page is not here</h1>
       <p className="lede">
-        The address you opened does not exist on this site. Backup 01 and Backup 02 are being rebuilt, so their report
-        pages have been retired until the new drop arrives.
+        The address you opened does not exist on this site. The Backup 01 and Backup 02 report pages are also
+        being rebuilt, so their old routes land here until the new drop arrives.
       </p>
       <div className="notfound__links">
         <PageLink className="btn btn--primary" href={routeHref('home')}>
