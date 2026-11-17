@@ -179,7 +179,30 @@ Pages live on real paths, not fragments:
 | `/` | Overview |
 | `/total-database` | Aggregate report |
 | `/compare` | Channel head to head |
+| `/search` | Index-wide search across extensions, categories and pages |
 | `/sources` | Provenance, method, converter, glossary |
+
+## Sharing and output
+
+* **Copy view link** on every report head and in the extension ledger — the query string travels with it.
+* **Download PDF** opens the print dialog, where the browser saves the report as a PDF with the print stylesheet.
+* **Share** uses the native sheet on mobile and falls back to copying the address.
+* **Embed mode** — `?embed=1` drops the sidebar, top bar and footer so a report can live in an iframe.
+* **Social cards** — the build writes `dist/og/<route>.svg` and injects per-route `og:image` / `twitter:image`
+  tags. SVG keeps the build dependency-free; add a rasteriser if a target network insists on PNG.
+
+## Quality gates
+
+```
+npm test          # 23 Vitest + Testing Library checks (aggregate maths, URL state, router, insight, accent maths, copy)
+npm run test:e2e  # Playwright smoke: routes, retired URLs, theme persistence, palette, sidebar, embed
+npm run lighthouse  # Lighthouse CI budget from lighthouserc.json
+```
+
+The GitHub Actions workflow runs build (with `tsc --noEmit`), unit tests and the Chromium smoke suite, then
+deploys `dist` to Cloudflare Pages when the Cloudflare secrets are configured.
+
+## Retired pages
 
 Backup 01 / Backup 02 report pages were retired pending the next channel drop. Their routes now return an
 honest 404 (`NotFound`), the telemetry on the home page and Total Database stays live, and the archived

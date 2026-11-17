@@ -70,7 +70,7 @@ Local repository on branch `main`. Commit only finished, verified work. `.gitign
 
 ## Routing and links (added 2026-11-17)
 
-* Pages are real paths served by the SPA fallback: `/`, `/total-database`, `/compare`, `/sources`.
+* Pages are real paths served by the SPA fallback: `/`, `/total-database`, `/compare`, `/search`, `/sources`.
   Anything else renders `NotFound`. Never reintroduce `#/` routing; legacy fragments are migrated once
   in `src/lib/url.ts`.
 * The Backup 01 / Backup 02 report pages are retired pending new channel pages. Their datasets and
@@ -104,3 +104,6 @@ Local repository on branch `main`. Commit only finished, verified work. `.gitign
 * Dialogs use `useFocusTrap`; Esc must close, and focus must return to the trigger.
 * `?` opens shortcuts — ignore it while an input, textarea, select or contenteditable has focus.
 * Print styles are part of the contract: run a print preview on a report page after layout changes.
+* `?embed=1` removes the shell for iframes; keep it free of chrome and test it after shell changes.
+* Unit tests live beside the code as `*.test.ts(x)` (`npm test`); the Playwright smoke suite lives in `e2e/`.
+  Run both before shipping anything that touches routing, data derivation or appearance.
