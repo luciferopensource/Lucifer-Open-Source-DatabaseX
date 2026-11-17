@@ -41,10 +41,11 @@ test.describe('appearance', () => {
     const palette = page.locator('.palette')
     await expect(palette).toBeVisible()
     await palette.locator('input').fill('mkv')
-    await expect(palette.getByText('.MKV', { exact: true })).toBeVisible()
+    await expect(palette.getByRole('option', { name: /\.mkv/i }).first()).toBeVisible()
   })
 
-  test('sidebar can be hidden and restored from the top bar', async ({ page }) => {
+  test('sidebar can be hidden and restored from the top bar', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'the sidebar toggle is desktop-only; mobile keeps the horizontal nav')
     await page.goto('/')
     await page.getByRole('button', { name: 'Hide sidebar' }).first().click()
     await expect(page.locator('html')).toHaveAttribute('data-sidebar', 'hidden')
