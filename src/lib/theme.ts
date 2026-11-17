@@ -2,7 +2,16 @@ import { useCallback, useEffect, useState } from 'react'
 
 export type Theme = 'dark' | 'light'
 export type AccentId = 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'graphite'
-export type FontId = 'grotesk' | 'editorial' | 'technical'
+export type FontId =
+  | 'grotesk'
+  | 'editorial'
+  | 'technical'
+  | 'sora'
+  | 'manrope'
+  | 'playfair'
+  | 'fraunces'
+  | 'syne'
+  | 'instrument'
 export type Density = 'comfortable' | 'compact'
 export type TextSize = 'sm' | 'md' | 'lg'
 export type Wallpaper = 'mesh' | 'glow' | 'grid' | 'none'
@@ -27,6 +36,12 @@ export const FONTS: { id: FontId; label: string; sample: string }[] = [
   { id: 'grotesk', label: 'Grotesk', sample: 'Aa' },
   { id: 'editorial', label: 'Editorial', sample: 'Aa' },
   { id: 'technical', label: 'Technical', sample: 'Aa' },
+  { id: 'sora', label: 'Sora', sample: 'Aa' },
+  { id: 'manrope', label: 'Manrope', sample: 'Aa' },
+  { id: 'playfair', label: 'Playfair', sample: 'Aa' },
+  { id: 'fraunces', label: 'Fraunces', sample: 'Aa' },
+  { id: 'syne', label: 'Syne', sample: 'Aa' },
+  { id: 'instrument', label: 'Instrument', sample: 'Aa' },
 ]
 
 const THEME_KEY = 'lx-theme'

@@ -363,3 +363,29 @@
   font-size: 0.56rem;
   color: var(--text-3);
 }
+
+
+/* Preview each face in its own font */
+.font-grid button[data-font-preview='sora'] .font-sample {
+  font-family: 'Sora', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-grid button[data-font-preview='manrope'] .font-sample {
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-grid button[data-font-preview='playfair'] .font-sample {
+  font-family: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+.font-grid button[data-font-preview='fraunces'] .font-sample {
+  font-family: 'Fraunces', ui-serif, Georgia, serif;
+}
+
+.font-grid button[data-font-preview='syne'] .font-sample {
+  font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-grid button[data-font-preview='instrument'] .font-sample {
+  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+}

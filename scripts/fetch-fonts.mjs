@@ -14,10 +14,18 @@ const UA =
 
 // Only the weights the design system actually applies.
 const FAMILIES = [
+  // Body + numbers (always loaded)
   { family: 'Inter', weights: [400, 500, 600] },
-  { family: 'Space Grotesk', weights: [500, 600] },
   { family: 'JetBrains Mono', weights: [400, 500] },
+  // Display faces — only downloaded when the visitor selects them
+  { family: 'Space Grotesk', weights: [500, 600] },
   { family: 'Newsreader', weights: [400, 500] },
+  { family: 'Sora', weights: [500, 600] },
+  { family: 'Manrope', weights: [500, 600] },
+  { family: 'Playfair Display', weights: [500, 600] },
+  { family: 'Fraunces', weights: [500] },
+  { family: 'Syne', weights: [600] },
+  { family: 'Instrument Serif', weights: [400] },
 ]
 
 const outDir = path.resolve('public/fonts')

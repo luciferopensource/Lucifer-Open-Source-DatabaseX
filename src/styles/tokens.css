@@ -231,3 +231,66 @@
 :root[data-font='technical'] .hero__title {
   letter-spacing: -0.045em;
 }
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Additional display faces. Body copy stays Inter and numbers stay JetBrains
+   Mono, so a change here never reflows a table.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root[data-font='sora'] {
+  --font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root[data-font='manrope'] {
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root[data-font='playfair'] {
+  --font-display: 'Playfair Display', ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+:root[data-font='fraunces'] {
+  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+:root[data-font='syne'] {
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root[data-font='instrument'] {
+  --font-display: 'Instrument Serif', ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+:root[data-font='playfair'] h1,
+:root[data-font='playfair'] h2,
+:root[data-font='playfair'] h3,
+:root[data-font='playfair'] h4,
+:root[data-font='fraunces'] h1,
+:root[data-font='fraunces'] h2,
+:root[data-font='fraunces'] h3,
+:root[data-font='fraunces'] h4,
+:root[data-font='instrument'] h1,
+:root[data-font='instrument'] h2,
+:root[data-font='instrument'] h3,
+:root[data-font='instrument'] h4 {
+  letter-spacing: -0.012em;
+  font-weight: 500;
+}
+
+:root[data-font='playfair'] .hero__title,
+:root[data-font='fraunces'] .hero__title,
+:root[data-font='instrument'] .hero__title {
+  letter-spacing: -0.018em;
+  line-height: 1.08;
+}
+
+:root[data-font='syne'] .hero__title {
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+:root[data-font='sora'] .hero__title,
+:root[data-font='manrope'] .hero__title {
+  letter-spacing: -0.035em;
+}
