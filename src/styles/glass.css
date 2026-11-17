@@ -115,8 +115,9 @@
 :root[data-glass='on'] .archive-card,
 :root[data-glass='on'] .scan-strip,
 :root[data-glass='on'] .snapshot,
-:root[data-glass='on'] .settings {
-  border-color: color-mix(in srgb, var(--line-2) 80%, transparent);
+:root[data-glass='on'] .settings,
+:root[data-glass='on'] .footer {
+  border-color: var(--glass-border);
 }
 
 /* Browsers without backdrop-filter get a solid surface rather than a
