@@ -3,6 +3,7 @@ import { useLocation, routeHref } from '../lib/router'
 import { replacePath } from '../lib/url'
 import { PageLink } from '../components/PageLink'
 import { ExtensionLedger } from '../components/ExtensionLedger'
+import { AuditTimeline, ResolutionChannelMatrix, VaultHealthCards } from '../components/Intelligence'
 import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
 import { useStorageUnit } from '../data/storageUnitContext'
 import {
@@ -13,6 +14,7 @@ import {
   sumDurations,
 } from '../lib/view'
 import { Kpi, Panel, Pill, StatusPill, TabPanel, Tabs } from '../components/ui'
+import { auditTimeline, resolutionByChannel, snapshotDates, vaultHealth } from '../lib/insight'
 import {
   CategoryMatrix,
   ContributionCards,
@@ -20,10 +22,10 @@ import {
   ScanStrip,
   StorageReport,
 } from '../components/Reports'
-import { IconArrowLeft, IconDatabase, IconShield } from '../components/Icons'
+import { IconArrowLeft, IconChart, IconClock, IconDatabase, IconShield } from '../components/Icons'
 
-type TabId = 'channel' | 'resolution' | 'storage' | 'extensions'
-const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions']
+type TabId = 'channel' | 'resolution' | 'storage' | 'extensions' | 'signals'
+const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions', 'signals']
 
 export function TotalDatabase() {
   const location = useLocation()
@@ -37,6 +39,10 @@ export function TotalDatabase() {
   const resolution = resolutionFromAggregate(aggregate)
   const extensions = extensionsFromAggregate(aggregate)
   const highlights = aggregate.storageHighlights
+  const health = vaultHealth()
+  const matrix = resolutionByChannel()
+  const timeline = auditTimeline()
+  const channels = REGISTERED_ARCHIVES.filter((archive) => archive.isPublic).map((archive) => shortChannel(archive.displayName))
 
   return (
     <>
@@ -86,6 +92,7 @@ export function TotalDatabase() {
           { id: 'resolution', label: 'Resolution intelligence', count: `${resolution.length}` },
           { id: 'storage', label: 'Storage highlights' },
           { id: 'extensions', label: 'Extension ledger', count: `${aggregate.extensionIntelligence.uniqueExtensionsCount}` },
+          { id: 'signals', label: 'Health & signals', count: `${health.length}` },
         ]}
       />
 
@@ -166,6 +173,47 @@ export function TotalDatabase() {
             storage: aggregate.extensionIntelligence.totalAnalysedStorage,
           }}
         />
+      </TabPanel>
+
+      <TabPanel id="signals" active={tab}>
+        <ScanStrip
+          cells={[
+            { label: 'Snapshot dates', value: snapshotDates().join(' · ') || '—' },
+            { label: 'Registered archives', value: `${aggregate.archiveCount}` },
+            { label: 'Integrity checks', value: `${aggregate.dataIntegrity.filter((item) => item.verified).length} / ${aggregate.dataIntegrity.length}` },
+            { label: 'Unique extensions', value: `${aggregate.extensionIntelligence.uniqueExtensionsCount}` },
+            { label: 'Largest file', value: highlights.largestFileSize },
+            { label: 'Report version', value: aggregate.scanRecord.reportVersion },
+          ]}
+        />
+
+        <div style={{ marginTop: 16 }}>
+          <Panel title="Vault health score" icon={<IconShield />} meta="Derived, formula on the card">
+            <VaultHealthCards reports={health} />
+          </Panel>
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <Panel
+            title="Resolution × channel matrix"
+            icon={<IconChart />}
+            meta={`${matrix.length} tiers · ${channels.length} channels`}
+            flush
+          >
+            <ResolutionChannelMatrix rows={matrix} channels={channels} />
+          </Panel>
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <Panel title="Audit timeline" icon={<IconClock />} meta={`${timeline.length} recorded facts`}>
+            <AuditTimeline events={timeline} />
+            <p className="note" style={{ marginTop: 16 }}>
+              Both scans carry the same completion date, so this is one snapshot rather than a trend. A trend chart
+              appears automatically once the registry holds archives from different audit dates — inventing a delta
+              from a single snapshot would break the data-honesty rule.
+            </p>
+          </Panel>
+        </div>
       </TabPanel>
 
       <p className="note" style={{ marginTop: 24 }}>

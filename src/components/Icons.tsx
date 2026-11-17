@@ -228,6 +228,15 @@ export function IconSettings(props: IconProps) {
   )
 }
 
+export function IconClock(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 1.8" />
+    </Svg>
+  )
+}
+
 export function IconPanelLeft(props: IconProps) {
   return (
     <Svg {...props}>
