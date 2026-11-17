@@ -247,3 +247,8 @@ npm run build     # tsc --noEmit && vite build
 | Text size | Small, Default, Large (scales the root font size) |
 | Background | Mesh (default), Glow, Grid, Plain — the layer behind the glass |
 | Sidebar | Shown / Hidden — also toggled from the top bar; hidden only applies above 1080 px |
+| Sidebar | Shown / Compact / Hidden — compact keeps icons only; hidden only applies above 1080 px |
+| Corner radius | Sharp / Default / Soft — swaps the `--r-*` scale |
+| Custom accent | Any hex; light and dark variants are derived, with an automated `--on-accent` |
+| Glass presets | Soft 20%, Medium 45%, Strong 75% above the free slider |
+| Uploaded wallpaper | PNG/JPEG/WebP up to 2 MB, stored in IndexedDB (not localStorage) |

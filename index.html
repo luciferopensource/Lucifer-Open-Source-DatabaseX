@@ -62,11 +62,13 @@
           root.dataset.size = localStorage.getItem('lx-size') || 'md'
           root.dataset.wallpaper = localStorage.getItem('lx-wallpaper') || 'mesh'
           root.dataset.sidebar = localStorage.getItem('lx-sidebar') || 'shown'
+          root.dataset.radius = localStorage.getItem('lx-radius') || 'default'
         } catch (error) {
           root.dataset.density = 'comfortable'
           root.dataset.size = 'md'
           root.dataset.wallpaper = 'mesh'
           root.dataset.sidebar = 'shown'
+          root.dataset.radius = 'default'
         }
       })()
     </script>

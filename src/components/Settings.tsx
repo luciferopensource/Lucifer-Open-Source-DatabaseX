@@ -1,6 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Appearance } from '../lib/theme'
-import { ACCENTS, DENSITIES, FONTS, GLASS_MAX, GLASS_MIN, GLASS_STEP, TEXT_SIZES, WALLPAPERS } from '../lib/theme'
+import {
+  ACCENTS,
+  DENSITIES,
+  FONTS,
+  GLASS_MAX,
+  GLASS_MIN,
+  GLASS_STEP,
+  RADIUS_SCALES,
+  TEXT_SIZES,
+  WALLPAPERS,
+  isHex,
+} from '../lib/theme'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { IconCheck, IconClose, IconMoon, IconSun } from './Icons'
 
@@ -27,6 +38,9 @@ export function Settings({
     size,
     wallpaper,
     sidebar,
+    accentHex,
+    radius,
+    wallpaperImage,
     setTheme,
     setAccent,
     setFont,
@@ -36,8 +50,14 @@ export function Settings({
     setSize,
     setWallpaper,
     setSidebar,
+    setRadius,
+    setAccentHex,
+    uploadWallpaper,
+    removeWallpaper,
     reset,
   } = appearance
+  const [wallpaperError, setWallpaperError] = useState('')
+  const fileRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLElement>(null)
   useFocusTrap(panelRef, open)
 
@@ -98,6 +118,35 @@ export function Settings({
                 </button>
               ))}
             </div>
+            <div className="accent-custom">
+              <label className="accent-custom__picker">
+                <input
+                  type="color"
+                  value={accentHex}
+                  aria-label="Custom accent colour"
+                  onChange={(event) => setAccentHex(event.target.value)}
+                />
+                <span>Custom</span>
+              </label>
+              <input
+                className="accent-custom__hex mono"
+                type="text"
+                value={accentHex.toUpperCase()}
+                aria-label="Custom accent hex value"
+                spellCheck={false}
+                onChange={(event) => {
+                  if (isHex(event.target.value)) setAccentHex(event.target.value)
+                }}
+              />
+              <button
+                type="button"
+                className="btn btn--quiet"
+                aria-pressed={accent === 'custom'}
+                onClick={() => setAccentHex(accentHex)}
+              >
+                Apply
+              </button>
+            </div>
           </section>
 
           <section className="settings__group">
@@ -117,6 +166,27 @@ export function Settings({
               >
                 <span className="switch__thumb" />
               </button>
+            </div>
+
+            <div className="glass-presets" role="group" aria-label="Glass presets">
+              {[
+                { pct: 20, label: 'Soft' },
+                { pct: 45, label: 'Medium' },
+                { pct: 75, label: 'Strong' },
+              ].map((preset) => (
+                <button
+                  key={preset.pct}
+                  type="button"
+                  aria-pressed={glass && glassStrength === preset.pct}
+                  onClick={() => {
+                    setGlass(true)
+                    setGlassStrength(preset.pct)
+                  }}
+                >
+                  {preset.label}
+                  <span>{preset.pct}%</span>
+                </button>
+              ))}
             </div>
 
             {glass ? (
@@ -164,7 +234,35 @@ export function Settings({
                 </button>
               ))}
             </div>
-            <p className="settings__hint">The layer behind the glass. Mesh is the default; plain removes it entirely.</p>
+            <div className="wallpaper-upload">
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={async (event) => {
+                  const file = event.target.files?.[0]
+                  if (!file) return
+                  const result = await uploadWallpaper(file)
+                  setWallpaperError(result.ok ? '' : result.error ?? 'Upload failed.')
+                  event.target.value = ''
+                }}
+              />
+              <button type="button" className="btn btn--quiet" onClick={() => fileRef.current?.click()}>
+                Upload image
+              </button>
+              {wallpaperImage ? (
+                <button type="button" className="btn btn--quiet" onClick={() => void removeWallpaper()}>
+                  Remove upload
+                </button>
+              ) : null}
+              <span className="settings__hint">PNG, JPEG or WebP · max 2 MB · stored on this device.</span>
+            </div>
+            {wallpaperError ? <p className="settings__error">{wallpaperError}</p> : null}
+            <p className="settings__hint">
+              The layer behind the glass. Mesh is the default; plain removes it entirely. An uploaded image becomes the
+              custom background until you remove it.
+            </p>
           </section>
 
           <section className="settings__group">
@@ -196,18 +294,36 @@ export function Settings({
             </div>
             <div className="seg-row">
               <span className="seg-row__label">Sidebar</span>
-              <div className="mode-grid">
+              <div className="mode-grid mode-grid--three">
                 <button type="button" aria-pressed={sidebar === 'shown'} onClick={() => setSidebar('shown')}>
                   Shown
+                </button>
+                <button type="button" aria-pressed={sidebar === 'compact'} onClick={() => setSidebar('compact')}>
+                  Compact
                 </button>
                 <button type="button" aria-pressed={sidebar === 'hidden'} onClick={() => setSidebar('hidden')}>
                   Hidden
                 </button>
               </div>
             </div>
+            <div className="seg-row">
+              <span className="seg-row__label">Corners</span>
+              <div className="mode-grid mode-grid--three">
+                {RADIUS_SCALES.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    aria-pressed={radius === option.id}
+                    onClick={() => setRadius(option.id)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
             <p className="settings__hint">
-              Text size scales the whole interface; density only tightens spacing. The sidebar toggle also lives in the
-              top bar.
+              Text size scales the whole interface; density only tightens spacing. Compact keeps the icons and drops the
+              labels; the sidebar toggle also lives in the top bar.
             </p>
           </section>
 

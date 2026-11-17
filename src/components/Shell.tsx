@@ -60,7 +60,10 @@ export function Sidebar({
   const { unit, setUnit } = useStorageUnit()
   const aggregate = getAggregatedDatabase()
   const modeLabel = appearance.theme === 'dark' ? 'Dark' : 'Light'
-  const accentLabel = ACCENTS.find((accent) => accent.id === appearance.accent)?.label ?? 'Original blue'
+  const accentLabel =
+    appearance.accent === 'custom'
+      ? 'Custom'
+      : ACCENTS.find((accent) => accent.id === appearance.accent)?.label ?? 'Original blue'
 
   return (
     <aside className="sidebar">
@@ -80,7 +83,7 @@ export function Sidebar({
 
       <button type="button" className="nav__search" onClick={onOpenPalette}>
         <IconSearch width={14} height={14} />
-        Search everything
+        <span className="nav__search__text">Search everything</span>
         <kbd>⌘K</kbd>
       </button>
 
@@ -92,6 +95,7 @@ export function Sidebar({
             className={route === item.route ? 'nav__item is-active' : 'nav__item'}
             href={routeHref(item.route)}
             aria-current={route === item.route ? 'page' : undefined}
+            title={item.label}
           >
             <item.Icon />
             {item.label}

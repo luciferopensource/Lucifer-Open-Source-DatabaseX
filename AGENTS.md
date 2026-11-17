@@ -83,6 +83,9 @@ Local repository on branch `main`. Commit only finished, verified work. `.gitign
   `PAGE_TITLES` in `Shell.tsx`, the switch in `App.tsx`, and `ROUTES` in `scripts/prerender.mjs`.
 * The sidebar preference (`lx-sidebar`, `data-sidebar`) is desktop-only on purpose: below 1080 px the
   sidebar is the horizontal nav and must stay visible.
+* Appearance also carries `data-radius` (`lx-radius`) and custom accent tokens written inline on `<html>`
+  from `lx-accent-hex`. Uploaded wallpapers live in IndexedDB (`lx-appearance` / `wallpaper`), never in
+  localStorage — the 5 MB budget is shared with every other preference.
 
 ## Build scripts
 
