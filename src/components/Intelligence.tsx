@@ -61,7 +61,7 @@ export function ResolutionChannelMatrix({
   if (rows.length === 0) return <p className="empty">No resolution records in the current aggregate.</p>
 
   return (
-    <div className="tbl-wrap">
+    <div className="table-wrap">
       <table className="tbl matrix">
         <thead>
           <tr>

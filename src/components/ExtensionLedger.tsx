@@ -5,6 +5,9 @@ import { replacePath } from '../lib/url'
 import type { ExtensionRow } from '../lib/view'
 import { Bar } from './ui'
 import { IconChart, IconDownload, IconList, IconSearch, IconTag } from './Icons'
+import { PageLink } from './PageLink'
+import { CopyLinkButton } from './CopyLinkButton'
+import { routeHref } from '../lib/router'
 
 const PAGE_SIZE = 25
 type SortMode = 'files' | 'storage' | 'az'
@@ -159,6 +162,7 @@ export function ExtensionLedger({
         </div>
 
         <div className="export-group">
+          <CopyLinkButton label="Copy view" />
           <button type="button" className="btn--quiet btn" onClick={exportCsv}>
             <IconDownload width={13} height={13} />
             CSV
@@ -227,7 +231,13 @@ export function ExtensionLedger({
                   <tr key={`${row.extension}-${row.category}`}>
                     <td className="tbl__ext">{row.extension}</td>
                     <td>
-                      <span className="cat-tag">{row.category}</span>
+                      <PageLink
+                        className="cat-tag cat-tag--link"
+                        href={routeHref('search', null, { q: row.category })}
+                        title={`Search every ${row.category} extension`}
+                      >
+                        {row.category}
+                      </PageLink>
                     </td>
                     <td className="tbl__num">{row.files}</td>
                     <td className="tbl__num">{formatString(row.storage)}</td>

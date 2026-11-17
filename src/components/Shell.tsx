@@ -22,7 +22,16 @@ const PAGE_TITLES: Record<Route, string> = {
   'total-database': 'Total Database',
   compare: 'Compare Channels',
   sources: 'Sources & Method',
+  search: 'Search',
   'not-found': 'Not Found',
+}
+
+const TAB_LABELS: Record<string, string> = {
+  channel: 'Channel analysis',
+  resolution: 'Resolution intelligence',
+  storage: 'Storage highlights',
+  extensions: 'Extension ledger',
+  signals: 'Health & signals',
 }
 
 function BrandMark() {
@@ -130,10 +139,12 @@ export function Sidebar({
 
 export function Topbar({
   route,
+  tab,
   sidebarHidden,
   onToggleSidebar,
 }: {
   route: Route
+  tab?: string | null
   sidebarHidden: boolean
   onToggleSidebar: () => void
 }) {
@@ -156,6 +167,12 @@ export function Topbar({
         <span>Index</span>
         <em>/</em>
         <b>{PAGE_TITLES[route]}</b>
+        {tab && TAB_LABELS[tab] ? (
+          <>
+            <em>/</em>
+            <span>{TAB_LABELS[tab]}</span>
+          </>
+        ) : null}
       </div>
       <div className="telemetry">
         <span>

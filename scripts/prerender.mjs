@@ -33,6 +33,12 @@ const ROUTES = [
     description: `Side-by-side comparison of the ${meta.archives} registered archives: storage, files, messages, resolution and category splits.`,
   },
   {
+    path: 'search',
+    title: 'Search',
+    heading: 'Search the index',
+    description: 'Search 490 recorded extensions, their categories and every page of the Lucifer Database X index.',
+  },
+  {
     path: 'sources',
     title: 'Sources & Method',
     heading: 'Sources & method',

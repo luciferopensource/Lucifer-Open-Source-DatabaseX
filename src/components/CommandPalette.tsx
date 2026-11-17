@@ -60,13 +60,20 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
 
   const results = (() => {
     const needle = query.trim().toLowerCase()
+    const searchAll: Command = {
+      id: 'search-all',
+      label: needle ? `Search the full index for “${query.trim()}”` : 'Search the full index',
+      hint: 'Extensions, categories and pages',
+      group: 'Search',
+      href: `/search${needle ? `?q=${encodeURIComponent(query.trim())}` : ''}`,
+    }
     const matched = needle
       ? INDEX.filter(
           (command) =>
             command.label.toLowerCase().includes(needle) || command.hint.toLowerCase().includes(needle),
         )
       : INDEX.filter((command) => command.group === 'Pages' || command.group === 'Reports')
-    return matched.slice(0, MAX_RESULTS)
+    return [searchAll, ...matched].slice(0, MAX_RESULTS)
   })()
 
   useEffect(() => {

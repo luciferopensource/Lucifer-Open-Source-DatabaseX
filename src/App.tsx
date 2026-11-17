@@ -13,6 +13,7 @@ const TotalDatabase = lazy(() =>
   import('./pages/TotalDatabase').then((module) => ({ default: module.TotalDatabase })),
 )
 const NotFound = lazy(() => import('./pages/NotFound').then((module) => ({ default: module.NotFound })))
+const Search = lazy(() => import('./pages/Search').then((module) => ({ default: module.Search })))
 const Compare = lazy(() => import('./pages/Compare').then((module) => ({ default: module.Compare })))
 const Sources = lazy(() => import('./pages/Sources').then((module) => ({ default: module.Sources })))
 
@@ -21,6 +22,7 @@ const TITLES: Record<Route, string> = {
   'total-database': 'Total Database',
   compare: 'Compare Channels',
   sources: 'Sources & Method',
+  search: 'Search',
   'not-found': 'Not Found',
 }
 
@@ -81,6 +83,7 @@ export default function App() {
         <div className="frame">
           <Topbar
             route={route}
+            tab={location.tab}
             sidebarHidden={appearance.sidebar === 'hidden'}
             onToggleSidebar={() =>
               appearance.setSidebar(appearance.sidebar === 'hidden' ? 'shown' : 'hidden')
@@ -92,6 +95,7 @@ export default function App() {
               {route === 'total-database' ? <TotalDatabase /> : null}
               {route === 'compare' ? <Compare /> : null}
               {route === 'sources' ? <Sources /> : null}
+              {route === 'search' ? <Search /> : null}
               {route === 'not-found' ? <NotFound /> : null}
             </Suspense>
           </main>

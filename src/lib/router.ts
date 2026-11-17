@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { readUrl, subscribeUrl } from './url'
 
-export type Route = 'home' | 'total-database' | 'compare' | 'sources' | 'not-found'
+export type Route = 'home' | 'total-database' | 'compare' | 'sources' | 'search' | 'not-found'
 
-const KNOWN: Route[] = ['home', 'total-database', 'compare', 'sources']
+const KNOWN: Route[] = ['home', 'total-database', 'compare', 'sources', 'search']
 
 export interface Location {
   route: Route
