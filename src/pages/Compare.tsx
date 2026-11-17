@@ -4,11 +4,10 @@ import { useStorageUnit } from '../data/storageUnitContext'
 import { parseCount, shortChannel } from '../lib/view'
 import { Kpi, Panel, Pill } from '../components/ui'
 import { PageLink } from '../components/PageLink'
-import { routeHref, type Route } from '../lib/router'
+import { routeHref } from '../lib/router'
 import { IconArrowLeft, IconChart } from '../components/Icons'
 
 interface Side {
-  route: Route
   name: string
   scanId: string
   storage: string
@@ -26,7 +25,6 @@ interface Side {
 const SIDES: Side[] = REGISTERED_ARCHIVES.map((archive) => {
   const highlights = archive.dataset.storageHighlights
   return {
-    route: archive.route as Route,
     name: archive.displayName,
     scanId: archive.scanId,
     storage: archive.combinedStorage,
@@ -131,7 +129,7 @@ export function Compare() {
 
       <div className="compare-cards">
         {SIDES.map((side) => (
-          <article className="compare-card" key={side.route}>
+          <article className="compare-card" key={side.scanId}>
             <div className="compare-card__head">
               <span className="archive-card__index">{shortChannel(side.name)}</span>
               <Pill tone="pos" dot>
@@ -154,9 +152,6 @@ export function Compare() {
                 <b>{side.extensions}</b>
               </div>
             </div>
-            <PageLink className="archive-card__cta" href={routeHref(side.route)}>
-              Open report
-            </PageLink>
           </article>
         ))}
       </div>

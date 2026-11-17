@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, type Route } from './lib/router'
 import { useAppearance } from './lib/theme'
 import { StorageUnitProvider } from './data/storageUnitContext'
-import { REGISTERED_ARCHIVES } from './data/archiveRegistry'
 import { Sidebar, Topbar, Footer } from './components/Shell'
 import { Cursor } from './components/Cursor'
 import { Settings } from './components/Settings'
@@ -13,7 +12,7 @@ const Home = lazy(() => import('./pages/Home').then((module) => ({ default: modu
 const TotalDatabase = lazy(() =>
   import('./pages/TotalDatabase').then((module) => ({ default: module.TotalDatabase })),
 )
-const Backup = lazy(() => import('./pages/Backup').then((module) => ({ default: module.Backup })))
+const NotFound = lazy(() => import('./pages/NotFound').then((module) => ({ default: module.NotFound })))
 const Compare = lazy(() => import('./pages/Compare').then((module) => ({ default: module.Compare })))
 const Sources = lazy(() => import('./pages/Sources').then((module) => ({ default: module.Sources })))
 
@@ -21,9 +20,8 @@ const TITLES: Record<Route, string> = {
   home: 'Sovereign Media Index',
   'total-database': 'Total Database',
   compare: 'Compare Channels',
-  'stream-backup-1': 'Stream Backup 01',
-  'stream-backup-2': 'Stream Backup 02',
   sources: 'Sources & Method',
+  'not-found': 'Not Found',
 }
 
 export default function App() {
@@ -69,8 +67,6 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  const backup1 = REGISTERED_ARCHIVES.find((archive) => archive.route === 'stream-backup-1')
-  const backup2 = REGISTERED_ARCHIVES.find((archive) => archive.route === 'stream-backup-2')
 
   return (
     <StorageUnitProvider>
@@ -80,17 +76,23 @@ export default function App() {
           appearance={appearance}
           onOpenSettings={() => setSettingsOpen(true)}
           onOpenPalette={() => setPaletteOpen(true)}
+          onHide={() => appearance.setSidebar('hidden')}
         />
         <div className="frame">
-          <Topbar route={route} />
+          <Topbar
+            route={route}
+            sidebarHidden={appearance.sidebar === 'hidden'}
+            onToggleSidebar={() =>
+              appearance.setSidebar(appearance.sidebar === 'hidden' ? 'shown' : 'hidden')
+            }
+          />
           <main className="page">
             <Suspense fallback={<div className="page-loading" aria-hidden="true" />}>
               {route === 'home' ? <Home /> : null}
               {route === 'total-database' ? <TotalDatabase /> : null}
               {route === 'compare' ? <Compare /> : null}
-              {route === 'stream-backup-1' && backup1 ? <Backup archive={backup1} index={1} /> : null}
-              {route === 'stream-backup-2' && backup2 ? <Backup archive={backup2} index={2} /> : null}
               {route === 'sources' ? <Sources /> : null}
+              {route === 'not-found' ? <NotFound /> : null}
             </Suspense>
           </main>
           <Footer

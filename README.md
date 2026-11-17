@@ -179,9 +179,11 @@ Pages live on real paths, not fragments:
 | `/` | Overview |
 | `/total-database` | Aggregate report |
 | `/compare` | Channel head to head |
-| `/stream-backup-1` | Channel 1 report |
-| `/stream-backup-2` | Channel 2 report |
 | `/sources` | Provenance, method, converter, glossary |
+
+Backup 01 / Backup 02 report pages were retired pending the next channel drop. Their routes now return an
+honest 404 (`NotFound`), the telemetry on the home page and Total Database stays live, and the archived
+`src/data` modules are untouched so the new pages can be wired in without re-importing anything.
 
 * Tab, filter, sort, page and view state live in the query string:
   `/stream-backup-1/extensions?q=mkv&page=2&sort=storage&view=chart`. Every view is shareable and
@@ -244,3 +246,4 @@ npm run build     # tsc --noEmit && vite build
 | Density | Comfortable, Compact |
 | Text size | Small, Default, Large (scales the root font size) |
 | Background | Mesh (default), Glow, Grid, Plain — the layer behind the glass |
+| Sidebar | Shown / Hidden — also toggled from the top bar; hidden only applies above 1080 px |

@@ -33,22 +33,6 @@ const ROUTES = [
     description: `Side-by-side comparison of the ${meta.archives} registered archives: storage, files, messages, resolution and category splits.`,
   },
   {
-    path: 'stream-backup-1',
-    title: 'Stream Backup 01',
-    heading: meta.channels[0]?.name ?? 'Stream Backup 01',
-    description: meta.channels[0]
-      ? `${meta.channels[0].name}: ${meta.channels[0].storage} across ${meta.channels[0].files} audited files (scan ${meta.channels[0].scanId}).`
-      : 'Channel 1 audit report.',
-  },
-  {
-    path: 'stream-backup-2',
-    title: 'Stream Backup 02',
-    heading: meta.channels[1]?.name ?? 'Stream Backup 02',
-    description: meta.channels[1]
-      ? `${meta.channels[1].name}: ${meta.channels[1].storage} across ${meta.channels[1].files} audited files (scan ${meta.channels[1].scanId}).`
-      : 'Channel 2 audit report.',
-  },
-  {
     path: 'sources',
     title: 'Sources & Method',
     heading: 'Sources & method',
@@ -60,8 +44,6 @@ const NAV_LINKS = [
   ['/', 'Overview'],
   ['/total-database', 'Total Database'],
   ['/compare', 'Compare'],
-  ['/stream-backup-1', 'Backup 01'],
-  ['/stream-backup-2', 'Backup 02'],
   ['/sources', 'Sources'],
 ]
 

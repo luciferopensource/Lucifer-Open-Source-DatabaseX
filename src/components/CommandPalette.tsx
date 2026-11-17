@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
-import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
 import { routeHref } from '../lib/router'
 import { navigateTo } from '../lib/url'
 import { IconSearch } from './Icons'
@@ -18,8 +17,6 @@ const PAGES: Command[] = [
   { id: 'page-home', label: 'Overview', hint: 'Living archive home', group: 'Pages', href: routeHref('home') },
   { id: 'page-total', label: 'Total Database', hint: 'Aggregate report', group: 'Pages', href: routeHref('total-database') },
   { id: 'page-compare', label: 'Compare channels', hint: 'Backup 01 vs Backup 02', group: 'Pages', href: routeHref('compare') },
-  { id: 'page-b1', label: 'Backup 01', hint: 'Lucifer Stream Site Backup 1', group: 'Pages', href: routeHref('stream-backup-1') },
-  { id: 'page-b2', label: 'Backup 02', hint: 'Lucifer Stream Site Backup 2', group: 'Pages', href: routeHref('stream-backup-2') },
   { id: 'page-sources', label: 'Sources & method', hint: 'Provenance, converter, glossary', group: 'Pages', href: routeHref('sources') },
 ]
 
@@ -34,18 +31,13 @@ const MAX_RESULTS = 12
 
 function buildIndex(): Command[] {
   const aggregate = getAggregatedDatabase()
-  const reports: Command[] = []
-  for (const archive of REGISTERED_ARCHIVES) {
-    for (const tab of REPORT_TABS) {
-      reports.push({
-        id: `${archive.route}-${tab.tab}`,
-        label: `${archive.displayName} — ${tab.label}`,
-        hint: `Report tab · ${archive.scanId}`,
-        group: 'Reports',
-        href: routeHref(archive.route as Parameters<typeof routeHref>[0], tab.tab),
-      })
-    }
-  }
+  const reports: Command[] = REPORT_TABS.map((tab) => ({
+    id: `total-${tab.tab}`,
+    label: `Total Database — ${tab.label}`,
+    hint: 'Aggregate report tab',
+    group: 'Reports',
+    href: routeHref('total-database', tab.tab),
+  }))
   const extensions: Command[] = aggregate.extensionIntelligence.records.slice(0, 200).map((record) => ({
     id: `ext-${record.extension}`,
     label: record.extension,

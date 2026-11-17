@@ -70,14 +70,19 @@ Local repository on branch `main`. Commit only finished, verified work. `.gitign
 
 ## Routing and links (added 2026-11-17)
 
-* Pages are real paths served by the SPA fallback: `/`, `/total-database`, `/compare`,
-  `/stream-backup-1`, `/stream-backup-2`, `/sources`. Never reintroduce `#/` routing; legacy
-  fragments are migrated once in `src/lib/url.ts`.
+* Pages are real paths served by the SPA fallback: `/`, `/total-database`, `/compare`, `/sources`.
+  Anything else renders `NotFound`. Never reintroduce `#/` routing; legacy fragments are migrated once
+  in `src/lib/url.ts`.
+* The Backup 01 / Backup 02 report pages are retired pending new channel pages. Their datasets and
+  registry entries remain in `src/data/` on purpose — do not delete them, and do not re-add the routes
+  until the replacement pages exist.
 * Every page-to-page link uses `PageLink` so it opens in a new tab. In-page controls stay buttons.
 * New filters or tabs must be addressable through the query string (`replacePath`) — if a view cannot
   be linked, it is not finished.
 * Adding a route means updating **four** places: `Route` in `src/lib/router.ts`, `NAV` and
   `PAGE_TITLES` in `Shell.tsx`, the switch in `App.tsx`, and `ROUTES` in `scripts/prerender.mjs`.
+* The sidebar preference (`lx-sidebar`, `data-sidebar`) is desktop-only on purpose: below 1080 px the
+  sidebar is the horizontal nav and must stay visible.
 
 ## Build scripts
 

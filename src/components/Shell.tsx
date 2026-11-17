@@ -6,24 +6,23 @@ import { ACCENTS } from '../lib/theme'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO, TELEGRAM_COMMUNITY_LINKS } from '../data/channelIntelligenceData'
 import { useStorageUnit, type StorageUnit } from '../data/storageUnitContext'
-import { IconChart, IconDatabase, IconFilm, IconGrid, IconSearch, IconSettings, IconShield } from './Icons'
+import { IconChart, IconDatabase, IconGrid, IconPanelLeft, IconSearch, IconSettings, IconShield } from './Icons'
 
-const NAV: { route: Route; label: string; index: string; Icon: typeof IconGrid }[] = [
+type PageRoute = Exclude<Route, 'not-found'>
+
+const NAV: { route: PageRoute; label: string; index: string; Icon: typeof IconGrid }[] = [
   { route: 'home', label: 'Overview', index: '00', Icon: IconGrid },
   { route: 'total-database', label: 'Total Database', index: '01', Icon: IconDatabase },
   { route: 'compare', label: 'Compare', index: '02', Icon: IconChart },
-  { route: 'stream-backup-1', label: 'Backup 01', index: '03', Icon: IconFilm },
-  { route: 'stream-backup-2', label: 'Backup 02', index: '04', Icon: IconFilm },
-  { route: 'sources', label: 'Sources', index: '05', Icon: IconShield },
+  { route: 'sources', label: 'Sources', index: '03', Icon: IconShield },
 ]
 
 const PAGE_TITLES: Record<Route, string> = {
   home: 'Overview',
   'total-database': 'Total Database',
   compare: 'Compare Channels',
-  'stream-backup-1': 'Stream Backup 01',
-  'stream-backup-2': 'Stream Backup 02',
   sources: 'Sources & Method',
+  'not-found': 'Not Found',
 }
 
 function BrandMark() {
@@ -41,11 +40,13 @@ export function Sidebar({
   appearance,
   onOpenSettings,
   onOpenPalette,
+  onHide,
 }: {
   route: Route
   appearance: Appearance
   onOpenSettings: () => void
   onOpenPalette: () => void
+  onHide: () => void
 }) {
   const { unit, setUnit } = useStorageUnit()
   const aggregate = getAggregatedDatabase()
@@ -63,6 +64,10 @@ export function Sidebar({
           <span className="brand__meta">Sovereign media index</span>
         </span>
       </PageLink>
+
+      <button type="button" className="sidebar__hide" onClick={onHide} aria-label="Hide sidebar" title="Hide sidebar">
+        <IconPanelLeft width={14} height={14} />
+      </button>
 
       <button type="button" className="nav__search" onClick={onOpenPalette}>
         <IconSearch width={14} height={14} />
@@ -123,12 +128,30 @@ export function Sidebar({
   )
 }
 
-export function Topbar({ route }: { route: Route }) {
+export function Topbar({
+  route,
+  sidebarHidden,
+  onToggleSidebar,
+}: {
+  route: Route
+  sidebarHidden: boolean
+  onToggleSidebar: () => void
+}) {
   const { formatString } = useStorageUnit()
   const aggregate = getAggregatedDatabase()
 
   return (
     <header className="topbar">
+      <button
+        type="button"
+        className="topbar__toggle"
+        onClick={onToggleSidebar}
+        aria-label={sidebarHidden ? 'Show sidebar' : 'Hide sidebar'}
+        aria-pressed={!sidebarHidden}
+        title={sidebarHidden ? 'Show sidebar' : 'Hide sidebar'}
+      >
+        <IconPanelLeft width={15} height={15} />
+      </button>
       <div className="crumbs">
         <span>Index</span>
         <em>/</em>
@@ -189,12 +212,6 @@ export function Footer({
           </PageLink>
           <PageLink className="footer__link" href={routeHref('compare')}>
             Compare channels <span>Head to head</span>
-          </PageLink>
-          <PageLink className="footer__link" href={routeHref('stream-backup-1')}>
-            Backup 01 <span>LMS-4D0E-6C2A</span>
-          </PageLink>
-          <PageLink className="footer__link" href={routeHref('stream-backup-2')}>
-            Backup 02 <span>LMS-94E3-7DE1</span>
           </PageLink>
           <PageLink className="footer__link" href={routeHref('sources')}>
             Sources &amp; method <span>Provenance</span>

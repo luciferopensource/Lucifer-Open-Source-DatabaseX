@@ -917,3 +917,29 @@
 .wallpaper-grid button[data-wallpaper-preview='none'] .wallpaper-swatch {
   background-image: none;
 }
+
+
+/* ── Retired-card and 404 states ─────────────────────────────────────────── */
+
+.archive-card--static:hover {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.notfound {
+  max-width: 640px;
+  padding: 56px 0 32px;
+}
+
+.notfound h1 {
+  margin: 14px 0 16px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+}
+
+.notfound__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}

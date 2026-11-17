@@ -26,6 +26,7 @@ export function Settings({
     density,
     size,
     wallpaper,
+    sidebar,
     setTheme,
     setAccent,
     setFont,
@@ -34,6 +35,7 @@ export function Settings({
     setDensity,
     setSize,
     setWallpaper,
+    setSidebar,
     reset,
   } = appearance
   const panelRef = useRef<HTMLElement>(null)
@@ -192,7 +194,21 @@ export function Settings({
                 ))}
               </div>
             </div>
-            <p className="settings__hint">Text size scales the whole interface; density only tightens spacing.</p>
+            <div className="seg-row">
+              <span className="seg-row__label">Sidebar</span>
+              <div className="mode-grid">
+                <button type="button" aria-pressed={sidebar === 'shown'} onClick={() => setSidebar('shown')}>
+                  Shown
+                </button>
+                <button type="button" aria-pressed={sidebar === 'hidden'} onClick={() => setSidebar('hidden')}>
+                  Hidden
+                </button>
+              </div>
+            </div>
+            <p className="settings__hint">
+              Text size scales the whole interface; density only tightens spacing. The sidebar toggle also lives in the
+              top bar.
+            </p>
           </section>
 
           <section className="settings__group">

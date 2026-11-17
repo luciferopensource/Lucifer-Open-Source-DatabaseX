@@ -228,6 +228,15 @@ export function IconSettings(props: IconProps) {
   )
 }
 
+export function IconPanelLeft(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M9 4v16" />
+    </Svg>
+  )
+}
+
 export function IconClose(props: IconProps) {
   return (
     <Svg {...props}>

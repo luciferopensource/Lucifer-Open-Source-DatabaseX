@@ -1,5 +1,5 @@
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
-import { routeHref, type Route } from '../lib/router'
+import { routeHref } from '../lib/router'
 import { PageLink } from '../components/PageLink'
 import { CopyButton } from '../components/CopyButton'
 import { getAllArchives, getPaginatedArchives } from '../data/archiveRegistry'
@@ -7,7 +7,7 @@ import { CATALOG_ENTRIES } from '../data/catalog'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { resolutionFromAggregate } from '../lib/view'
 import { Pill, SectionHead, StatusPill } from '../components/ui'
-import { IconArrowRight, IconPlay } from '../components/Icons'
+import { IconDatabase } from '../components/Icons'
 
 export function Home() {
   const aggregate = getAggregatedDatabase()
@@ -42,15 +42,15 @@ export function Home() {
             </p>
 
             <div className="hero__actions">
-              <PageLink className="btn btn--primary" href={routeHref('stream-backup-1')}>
-                <IconPlay width={15} height={15} />
-                Stream movies now
-              </PageLink>
-              <PageLink className="btn btn--ghost" href={routeHref('total-database')}>
+              <PageLink className="btn btn--primary" href={routeHref('total-database')}>
+                <IconDatabase width={15} height={15} />
                 Open total database
               </PageLink>
               <PageLink className="btn btn--ghost" href={routeHref('compare')}>
                 Compare channels
+              </PageLink>
+              <PageLink className="btn btn--ghost" href={routeHref('sources')}>
+                Sources &amp; method
               </PageLink>
             </div>
 
@@ -148,13 +148,13 @@ export function Home() {
         <SectionHead
           eyebrow="Living archive"
           title="Registered channel vaults"
-          description="Two audited Telegram stream backups, each with its own scan reference, storage total and file count. The registry is built for thirty or more channels without touching page logic."
+          description="Two audited Telegram stream backups, each with its own scan reference, storage total and file count. Their report pages are being rebuilt, so the telemetry below stays live while the detail views are replaced."
           aside={<Pill tone="plain">{archives.length} archives</Pill>}
         />
 
         <div className="archive-grid">
           {archives.map((archive) => (
-            <PageLink className="archive-card" key={archive.id} href={routeHref(archive.route as Route)}>
+            <article className="archive-card archive-card--static" key={archive.id}>
               <div className="archive-card__top">
                 <span className="archive-card__index">Archive #{String(archive.sequence).padStart(2, '0')}</span>
                 <StatusPill status={archive.status} />
@@ -182,10 +182,7 @@ export function Home() {
                 </div>
               </dl>
 
-              <span className="archive-card__cta">
-                Inspect channel vault <IconArrowRight width={14} height={14} />
-              </span>
-            </PageLink>
+            </article>
           ))}
         </div>
 

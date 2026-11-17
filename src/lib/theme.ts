@@ -15,6 +15,7 @@ export type FontId =
 export type Density = 'comfortable' | 'compact'
 export type TextSize = 'sm' | 'md' | 'lg'
 export type Wallpaper = 'mesh' | 'glow' | 'grid' | 'none'
+export type SidebarState = 'shown' | 'hidden'
 
 export interface AccentOption {
   id: AccentId
@@ -50,6 +51,7 @@ const FONT_KEY = 'lx-font'
 const DENSITY_KEY = 'lx-density'
 const SIZE_KEY = 'lx-size'
 const WALLPAPER_KEY = 'lx-wallpaper'
+const SIDEBAR_KEY = 'lx-sidebar'
 const GLASS_KEY = 'lx-glass'
 const GLASS_PCT_KEY = 'lx-glass-pct'
 
@@ -114,6 +116,18 @@ function readFont(): FontId {
     /* storage can be blocked */
   }
   return 'grotesk'
+}
+
+function readSidebar(): SidebarState {
+  const fromDom = document.documentElement.dataset.sidebar
+  if (fromDom === 'hidden' || fromDom === 'shown') return fromDom
+  try {
+    const saved = localStorage.getItem(SIDEBAR_KEY)
+    if (saved === 'hidden' || saved === 'shown') return saved
+  } catch {
+    /* storage can be blocked */
+  }
+  return 'shown'
 }
 
 function readWallpaper(): Wallpaper {
@@ -186,6 +200,7 @@ export interface Appearance {
   density: Density
   size: TextSize
   wallpaper: Wallpaper
+  sidebar: SidebarState
   setTheme: (theme: Theme) => void
   setAccent: (accent: AccentId) => void
   setFont: (font: FontId) => void
@@ -194,6 +209,7 @@ export interface Appearance {
   setDensity: (density: Density) => void
   setSize: (size: TextSize) => void
   setWallpaper: (wallpaper: Wallpaper) => void
+  setSidebar: (sidebar: SidebarState) => void
   reset: () => void
 }
 
@@ -212,6 +228,7 @@ export function useAppearance(): Appearance {
   const [density, setDensity] = useState<Density>(readDensity)
   const [size, setSize] = useState<TextSize>(readSize)
   const [wallpaper, setWallpaper] = useState<Wallpaper>(readWallpaper)
+  const [sidebar, setSidebar] = useState<SidebarState>(readSidebar)
 
   useEffect(() => {
     const root = document.documentElement
@@ -222,6 +239,7 @@ export function useAppearance(): Appearance {
     root.dataset.density = density
     root.dataset.size = size
     root.dataset.wallpaper = wallpaper
+    root.dataset.sidebar = sidebar
     root.style.setProperty('--glass-pct', String(glassStrength))
     try {
       localStorage.setItem(THEME_KEY, theme)
@@ -232,12 +250,13 @@ export function useAppearance(): Appearance {
       localStorage.setItem(DENSITY_KEY, density)
       localStorage.setItem(SIZE_KEY, size)
       localStorage.setItem(WALLPAPER_KEY, wallpaper)
+      localStorage.setItem(SIDEBAR_KEY, sidebar)
     } catch {
       /* storage can be blocked; the live attributes still apply */
     }
     const meta = document.querySelector('meta[name="theme-color"]')
     if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0b0d' : '#f6f7f8')
-  }, [theme, accent, font, glass, glassStrength, density, size, wallpaper])
+  }, [theme, accent, font, glass, glassStrength, density, size, wallpaper, sidebar])
 
   const reset = useCallback(() => {
     setTheme(systemTheme())
@@ -248,6 +267,7 @@ export function useAppearance(): Appearance {
     setDensity('comfortable')
     setSize('md')
     setWallpaper('mesh')
+    setSidebar('shown')
   }, [])
 
   return {
@@ -259,6 +279,7 @@ export function useAppearance(): Appearance {
     density,
     size,
     wallpaper,
+    sidebar,
     setTheme,
     setAccent,
     setFont,
@@ -267,6 +288,7 @@ export function useAppearance(): Appearance {
     setDensity,
     setSize,
     setWallpaper,
+    setSidebar,
     reset,
   }
 }

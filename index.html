@@ -61,10 +61,12 @@
           root.dataset.density = localStorage.getItem('lx-density') || 'comfortable'
           root.dataset.size = localStorage.getItem('lx-size') || 'md'
           root.dataset.wallpaper = localStorage.getItem('lx-wallpaper') || 'mesh'
+          root.dataset.sidebar = localStorage.getItem('lx-sidebar') || 'shown'
         } catch (error) {
           root.dataset.density = 'comfortable'
           root.dataset.size = 'md'
           root.dataset.wallpaper = 'mesh'
+          root.dataset.sidebar = 'shown'
         }
       })()
     </script>
