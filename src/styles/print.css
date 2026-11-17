@@ -112,3 +112,11 @@
     text-decoration: none;
   }
 }
+
+
+@media print {
+  .page-head__actions,
+  .skip-link {
+    display: none !important;
+  }
+}

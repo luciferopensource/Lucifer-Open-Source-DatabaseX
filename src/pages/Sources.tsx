@@ -3,6 +3,8 @@ import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO } from '../data/channelIntelligenceData'
 import { UnitConverter } from '../components/Converter'
 import { PageLink } from '../components/PageLink'
+import { CopyLinkButton } from '../components/CopyLinkButton'
+import { PrintButton, ShareButton } from '../components/PageActions'
 import { CopyButton } from '../components/CopyButton'
 import { routeHref } from '../lib/router'
 import { GLOSSARY } from '../lib/glossary'
@@ -47,6 +49,11 @@ export function Sources() {
             <dt>Aggregate version</dt>
             <dd>{aggregate.scanRecord.reportVersion}</dd>
           </dl>
+        </div>
+        <div className="page-head__actions">
+          <CopyLinkButton />
+          <PrintButton />
+          <ShareButton title="Sources & method" />
         </div>
       </div>
 

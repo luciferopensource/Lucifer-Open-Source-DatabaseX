@@ -4,6 +4,7 @@ import { useLocation } from '../lib/router'
 import { replacePath } from '../lib/url'
 import { PageLink } from '../components/PageLink'
 import { CopyLinkButton } from '../components/CopyLinkButton'
+import { ShareButton } from '../components/PageActions'
 import { IconArrowLeft, IconSearch } from '../components/Icons'
 import { Pill } from '../components/ui'
 
@@ -78,6 +79,7 @@ export function Search() {
           </div>
           <div className="page-head__meta">
             <CopyLinkButton />
+            <ShareButton title="Lucifer Database X search" />
           </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { useStorageUnit } from '../data/storageUnitContext'
 import { parseCount, shortChannel } from '../lib/view'
 import { Kpi, Panel, Pill } from '../components/ui'
 import { PageLink } from '../components/PageLink'
+import { CopyLinkButton } from '../components/CopyLinkButton'
+import { PrintButton, ShareButton } from '../components/PageActions'
 import { routeHref } from '../lib/router'
 import { IconArrowLeft, IconChart } from '../components/Icons'
 
@@ -124,6 +126,11 @@ export function Compare() {
             <dt>Source</dt>
             <dd>Registered archive registry</dd>
           </dl>
+        </div>
+        <div className="page-head__actions">
+          <CopyLinkButton />
+          <PrintButton />
+          <ShareButton title="Compare channels" />
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import { Settings } from './components/Settings'
 import { CommandPalette } from './components/CommandPalette'
 import { GlossaryDialog } from './components/GlossaryDialog'
 import { ShortcutsDialog } from './components/ShortcutsDialog'
+import { ErrorBoundary } from './components/ErrorBoundary'
 const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })))
 const TotalDatabase = lazy(() =>
   import('./pages/TotalDatabase').then((module) => ({ default: module.TotalDatabase })),
@@ -29,6 +30,7 @@ const TITLES: Record<Route, string> = {
 export default function App() {
   const location = useLocation()
   const route = location.route
+  const embed = location.params.get('embed') === '1'
   const appearance = useAppearance()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
@@ -72,7 +74,13 @@ export default function App() {
 
   return (
     <StorageUnitProvider>
-      <div className="shell">
+      {!embed ? (
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+      ) : null}
+      <div className={embed ? 'shell shell--embed' : 'shell'}>
+        {!embed ? (
         <Sidebar
           route={route}
           appearance={appearance}
@@ -80,7 +88,9 @@ export default function App() {
           onOpenPalette={() => setPaletteOpen(true)}
           onHide={() => appearance.setSidebar('hidden')}
         />
+        ) : null}
         <div className="frame">
+          {!embed ? (
           <Topbar
             route={route}
             tab={location.tab}
@@ -89,7 +99,9 @@ export default function App() {
               appearance.setSidebar(appearance.sidebar === 'hidden' ? 'shown' : 'hidden')
             }
           />
-          <main className="page">
+          ) : null}
+          <main className="page" id="main" tabIndex={-1}>
+            <ErrorBoundary>
             <Suspense fallback={<div className="page-loading" aria-hidden="true" />}>
               {route === 'home' ? <Home /> : null}
               {route === 'total-database' ? <TotalDatabase /> : null}
@@ -98,18 +110,25 @@ export default function App() {
               {route === 'search' ? <Search /> : null}
               {route === 'not-found' ? <NotFound /> : null}
             </Suspense>
+            </ErrorBoundary>
           </main>
-          <Footer
-            onOpenGlossary={() => setGlossaryOpen(true)}
-            onOpenShortcuts={() => setShortcutsOpen(true)}
-          />
+          {!embed ? (
+            <Footer
+              onOpenGlossary={() => setGlossaryOpen(true)}
+              onOpenShortcuts={() => setShortcutsOpen(true)}
+            />
+          ) : null}
         </div>
       </div>
-      <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} appearance={appearance} />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
-      <GlossaryDialog open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
-      <ShortcutsDialog open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
-      <Cursor />
+      {!embed ? (
+        <>
+          <Settings open={settingsOpen} onClose={() => setSettingsOpen(false)} appearance={appearance} />
+          <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+          <GlossaryDialog open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
+          <ShortcutsDialog open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+          <Cursor />
+        </>
+      ) : null}
     </StorageUnitProvider>
   )
 }

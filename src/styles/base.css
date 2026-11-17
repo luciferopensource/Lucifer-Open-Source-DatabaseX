@@ -396,3 +396,29 @@ svg {
 :root[data-density='compact'] .hero__stats {
   margin-top: 28px;
 }
+
+
+/* ── Focus and contrast floors ───────────────────────────────────────────── */
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --text-2: #20262e;
+    --text-3: #3b434d;
+    --line: #9aa3ad;
+    --line-2: #7d8792;
+    --line-3: #5c6671;
+  }
+
+  :root[data-theme='dark'] {
+    --text-2: #e6ebf2;
+    --text-3: #c2ccd8;
+    --line: #5d6672;
+    --line-2: #77818e;
+    --line-3: #96a1ae;
+  }
+}

@@ -23,6 +23,8 @@ import {
   StorageReport,
 } from '../components/Reports'
 import { IconArrowLeft, IconChart, IconClock, IconDatabase, IconShield } from '../components/Icons'
+import { CopyLinkButton } from '../components/CopyLinkButton'
+import { PrintButton, ShareButton } from '../components/PageActions'
 
 type TabId = 'channel' | 'resolution' | 'storage' | 'extensions' | 'signals'
 const TAB_IDS: TabId[] = ['channel', 'resolution', 'storage', 'extensions', 'signals']
@@ -69,6 +71,11 @@ export function TotalDatabase() {
               <StatusPill status={aggregate.allScansVerified ? 'COMPLETE' : 'PARTIAL'} />
             </dd>
           </dl>
+        </div>
+        <div className="page-head__actions">
+          <CopyLinkButton />
+          <PrintButton />
+          <ShareButton title="Total Database" />
         </div>
       </div>
 
