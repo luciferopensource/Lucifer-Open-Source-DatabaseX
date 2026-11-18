@@ -238,7 +238,7 @@ export function Footer({
             Sources &amp; method <span>Provenance</span>
           </PageLink>
           <PageLink className="footer__link" href={routeHref('home')}>
-            Overview <span>Living archive</span>
+            Overview <span>Start here</span>
           </PageLink>
           <button type="button" className="footer__link footer__link--button" onClick={onOpenGlossary}>
             Glossary <span>Quick reference</span>

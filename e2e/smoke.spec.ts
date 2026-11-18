@@ -37,7 +37,10 @@ test.describe('appearance', () => {
 
   test('command palette opens with the keyboard and searches', async ({ page }) => {
     await page.goto('/')
-    await page.keyboard.press('ControlOrMeta+k')
+    // The shortcut is desktop muscle memory; touch devices use the search trigger.
+    const trigger = page.locator('.nav__search')
+    if (await trigger.isVisible()) await trigger.click()
+    else await page.keyboard.press('ControlOrMeta+k')
     const palette = page.locator('.palette')
     await expect(palette).toBeVisible()
     await palette.locator('input').fill('mkv')

@@ -4,6 +4,8 @@ import type { CategoryRow, ResolutionRow } from '../lib/view'
 import { toPercentage } from '../lib/view'
 import { Bar, Panel, StatusPill } from './ui'
 import { CategoryIcon, IconArrowRight, IconChart, IconHardDrive } from './Icons'
+import { PageLink } from './PageLink'
+import { routeHref } from '../lib/router'
 
 /* ── Scan strip ───────────────────────────────────────────────────────────── */
 
@@ -78,9 +80,9 @@ export function ContributionCards({ items }: { items: ChannelContributionItem[] 
             </div>
             <Bar pct={toPercentage(item.storageSharePercentage)} />
           </div>
-          <a className="archive-card__cta" href={`#${item.route}`}>
-            Open channel report <IconArrowRight width={14} height={14} />
-          </a>
+          <PageLink className="archive-card__cta" href={routeHref('compare')}>
+            Compare channels <IconArrowRight width={14} height={14} />
+          </PageLink>
         </article>
       ))}
     </div>

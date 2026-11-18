@@ -1,18 +1,14 @@
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { routeHref } from '../lib/router'
 import { PageLink } from '../components/PageLink'
-import { CopyButton } from '../components/CopyButton'
-import { getAllArchives, getPaginatedArchives } from '../data/archiveRegistry'
 import { CATALOG_ENTRIES } from '../data/catalog'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { resolutionFromAggregate } from '../lib/view'
-import { Pill, SectionHead, StatusPill } from '../components/ui'
+import { Pill, SectionHead } from '../components/ui'
 import { IconDatabase } from '../components/Icons'
 
 export function Home() {
   const aggregate = getAggregatedDatabase()
-  const archives = getAllArchives()
-  const pagination = getPaginatedArchives(1, 30, archives)
   const { formatString } = useStorageUnit()
 
   const resolution = resolutionFromAggregate(aggregate)
@@ -142,54 +138,6 @@ export function Home() {
             </div>
           </aside>
         </div>
-      </section>
-
-      <section className="section">
-        <SectionHead
-          eyebrow="Living archive"
-          title="Registered channel vaults"
-          description="Two audited Telegram stream backups, each with its own scan reference, storage total and file count. Their report pages are being rebuilt, so the telemetry below stays live while the detail views are replaced."
-          aside={<Pill tone="plain">{archives.length} archives</Pill>}
-        />
-
-        <div className="archive-grid">
-          {archives.map((archive) => (
-            <article className="archive-card archive-card--static" key={archive.id}>
-              <div className="archive-card__top">
-                <span className="archive-card__index">Archive #{String(archive.sequence).padStart(2, '0')}</span>
-                <StatusPill status={archive.status} />
-              </div>
-              <h3>{archive.displayName}</h3>
-              <div className="archive-card__idrow">
-                <p className="archive-card__id">
-                  {archive.channelId} · {archive.scanId}
-                </p>
-                <CopyButton value={`${archive.channelId} · ${archive.scanId}`} label="channel and scan reference" />
-              </div>
-
-              <dl className="archive-card__stats">
-                <div>
-                  <dt>Archived storage</dt>
-                  <dd>{formatString(archive.combinedStorage)}</dd>
-                </div>
-                <div>
-                  <dt>Files audited</dt>
-                  <dd>{archive.totalFiles}</dd>
-                </div>
-                <div>
-                  <dt>Audited</dt>
-                  <dd>{archive.completedDate}</dd>
-                </div>
-              </dl>
-
-            </article>
-          ))}
-        </div>
-
-        <p className="note" style={{ marginTop: 16 }}>
-          Showing {pagination.startRange}–{pagination.endRange} of {pagination.totalArchives} archives ·{' '}
-          {pagination.pageSize} per page · page {pagination.currentPage} of {pagination.totalPages}
-        </p>
       </section>
 
       <section className="section">
