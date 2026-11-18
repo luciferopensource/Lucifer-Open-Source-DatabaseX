@@ -194,7 +194,7 @@ Pages live on real paths, not fragments:
 ## Quality gates
 
 ```
-npm test          # 23 Vitest + Testing Library checks (aggregate maths, URL state, router, insight, accent maths, copy)
+npm test          # 24 Vitest + Testing Library checks (aggregate maths, auto-merge, URL state, router, insight, accent maths, copy)
 npm run test:e2e  # Playwright smoke: routes, retired URLs, theme persistence, palette, sidebar, embed
 npm run lighthouse  # Lighthouse CI budget from lighthouserc.json
 ```
