@@ -1,7 +1,7 @@
 {
   "name": "Lucifer Database X — Sovereign Media Index",
   "short_name": "Database X",
-  "description": "Verified scan telemetry for the Lucifer media fleet: 1,948,083 indexed files and 1,654.24 TB across two channel archives.",
+  "description": "Verified scan telemetry for the Lucifer media fleet, derived from audited channel reports.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

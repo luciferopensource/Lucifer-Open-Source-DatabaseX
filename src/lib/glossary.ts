@@ -73,7 +73,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'Scan ID',
-    definition: 'Identifier the scanner wrote for one audit run, e.g. LMS-4D0E-6C2A. It ties a table row back to its report.',
+    definition: 'Identifier the scanner wrote for one audit run, e.g. LMS-XXXX-XXXX. It ties a table row back to its report.',
     group: 'Audit',
   },
   {

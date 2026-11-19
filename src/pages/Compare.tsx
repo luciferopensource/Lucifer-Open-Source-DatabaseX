@@ -91,7 +91,7 @@ export function Compare() {
         {head}
         <Panel title="Nothing to compare yet" icon={<IconChart />} meta={`${sides.length} published`}>
           <p className="empty">
-            A head-to-head needs two published archives. Both retired channels are unpublished, so no comparison is
+            A head-to-head needs two published archives. The retired channels are unpublished, so no comparison is
             drawn from stale data — publish two registry entries and this page fills itself.
           </p>
         </Panel>

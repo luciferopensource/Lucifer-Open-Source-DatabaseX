@@ -1,4 +1,4 @@
-import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
+import { getAllArchives } from '../data/archiveRegistry'
 import { getAggregatedDatabase } from '../data/aggregateDatabase'
 import { OWNER_INFO } from '../data/channelIntelligenceData'
 import { UnitConverter } from '../components/Converter'
@@ -17,16 +17,17 @@ const REPORT_FILES: Record<string, { file: string; size: string }> = {
 }
 
 const METHOD = [
-  'Both audit reports were copied verbatim into `/reports/` from the source project. They are the only origin of the channel figures on this site.',
+  'The audit reports on file were copied verbatim into `/reports/` from the source project. They are the only origin of channel figures wherever a channel is published.',
   'The dataset modules in `src/data/` are byte-identical copies of the source datasets. No value was retyped, rounded or reformatted by hand.',
   'The aggregate sums the numeric fields, parses storage strings into bytes once, and derives category, resolution and extension unions from the registered archives.',
-  'Scan duration on the Total Database page is added from the two channel durations, not pasted from a summary.',
+  'Scan duration on the Total Database page is added from the published channel durations, not pasted from a summary.',
   'The integrity matrix is computed from the aggregate that was just built. An empty registry reports MISSING or EMPTY instead of a wall of green.',
   'The media catalogue is empty by design. It holds no titles, posters or counts until a verified query populates it.',
 ]
 
 export function Sources() {
   const aggregate = getAggregatedDatabase()
+  const archives = getAllArchives()
 
   return (
     <>
@@ -40,12 +41,12 @@ export function Sources() {
             <h1>Sources &amp; method</h1>
             <p className="lede">
               Where every number comes from, how it is derived, and what this site deliberately does not do. If a
-              figure cannot be traced to one of the two reports below, it does not belong on this site.
+              figure cannot be traced to an audited report, it does not belong on this site.
             </p>
           </div>
           <dl className="page-head__meta">
-            <dt>Reports on file</dt>
-            <dd>{REGISTERED_ARCHIVES.length}</dd>
+            <dt>Published reports</dt>
+            <dd>{archives.length}</dd>
             <dt>Aggregate version</dt>
             <dd>{aggregate.scanRecord.reportVersion}</dd>
           </dl>
@@ -57,8 +58,17 @@ export function Sources() {
         </div>
       </div>
 
+      {archives.length === 0 ? (
+        <Panel title="No channel is published" icon={<IconFileText />} meta="Registry empty">
+          <p className="empty">
+            The retired channels are unpublished, so their reports are not presented as live sources. The audit files
+            stay on disk in <code>/reports/</code> and the datasets stay in <code>src/data/</code>; publishing a registry
+            entry brings its report card back here automatically.
+          </p>
+        </Panel>
+      ) : (
       <div className="report-grid">
-        {REGISTERED_ARCHIVES.map((archive) => {
+        {archives.map((archive) => {
           const meta = REPORT_FILES[archive.id]
           return (
             <article className="report-card" key={archive.id}>
@@ -102,6 +112,7 @@ export function Sources() {
           )
         })}
       </div>
+      )}
 
       <div className="grid-2" style={{ marginTop: 20 }}>
         <Panel title="How the figures are derived" icon={<IconShield />} meta={`${METHOD.length} rules`}>
@@ -116,8 +127,8 @@ export function Sources() {
           <UnitConverter />
           <p className="note" style={{ marginTop: 12 }}>
             TB, GB and MB are binary (1 TB = 1024 GB). The headline PB figure uses the decimal convention the audit
-            reports use (1 PB = 1000 TB), which is why 1,654.24 TB reads as 1.65 PB above. The converter shares the
-            reports&rsquo; parser, so a figure typed here matches the tables exactly.
+            reports use (1 PB = 1000 TB). The converter shares the reports&rsquo; parser, so a figure typed here
+            matches the tables exactly.
           </p>
         </Panel>
       </div>

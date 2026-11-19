@@ -124,7 +124,7 @@ export function TotalDatabase() {
           <div style={{ marginTop: 16 }}>
             <Panel title="No channel is published" icon={<IconDatabase />} meta="Registry empty">
               <p className="empty">
-                Backup 01 and Backup 02 are unpublished while their replacements are built. Publish a registry entry
+                The retired channels are unpublished while their replacements are built. Publish a registry entry
                 and every total, matrix and ledger on this page merges it automatically.
               </p>
             </Panel>

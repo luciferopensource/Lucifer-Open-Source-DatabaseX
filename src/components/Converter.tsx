@@ -9,7 +9,7 @@ const UNITS: StorageUnit[] = ['PB', 'TB', 'GB', 'MB']
  * so a figure typed here matches the figure shown in a table exactly.
  */
 export function UnitConverter() {
-  const [value, setValue] = useState('1654.24')
+  const [value, setValue] = useState('')
   const [unit, setUnit] = useState<StorageUnit>('TB')
 
   const numeric = Number(value.replace(',', '.'))
@@ -24,6 +24,7 @@ export function UnitConverter() {
             type="text"
             inputMode="decimal"
             value={value}
+            placeholder="Enter a value"
             aria-label="Storage value"
             onChange={(event) => setValue(event.target.value)}
           />
