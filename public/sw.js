@@ -2,7 +2,7 @@
    Navigation is network-first with a cached fallback; every other same-origin
    GET is cache-first with a background fill. Bump CACHE_VERSION on release. */
 
-const CACHE_VERSION = 'lucifer-db-v1'
+const CACHE_VERSION = 'lucifer-db-v2'
 const SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/backgrounds/mesh-dark.svg', '/backgrounds/mesh-light.svg']
 
 self.addEventListener('install', (event) => {

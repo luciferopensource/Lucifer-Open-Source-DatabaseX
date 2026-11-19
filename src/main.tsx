@@ -20,7 +20,7 @@ if (rootElement) {
 // Offline support: registered after load so the first paint is never delayed.
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {
+    navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {
       /* a failed registration must never break the app */
     })
   })
