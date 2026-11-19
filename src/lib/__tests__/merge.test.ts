@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { getAllArchives } from '../../data/archiveRegistry'
+import { REGISTERED_ARCHIVES } from '../../data/archiveRegistry'
 import { getAggregatedDatabase } from '../../data/aggregateDatabase'
 
 describe('automatic merge', () => {
   it('recalculates totals when another archive is registered', () => {
-    const base = getAggregatedDatabase()
-    const first = getAllArchives()[0]
+    const base = getAggregatedDatabase(REGISTERED_ARCHIVES)
+    const first = REGISTERED_ARCHIVES[0]
     const extra = { ...first, id: 'archive-003', sequence: 3, displayName: 'Third vault (merge proof)' }
-    const merged = getAggregatedDatabase([...getAllArchives(), extra])
+    const merged = getAggregatedDatabase([...REGISTERED_ARCHIVES, extra])
 
     console.log('BASE  ', {
       archives: base.archiveCount,

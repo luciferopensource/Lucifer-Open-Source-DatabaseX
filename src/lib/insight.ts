@@ -28,8 +28,8 @@ export interface VaultHealth {
 }
 
 /** Weighted, transparent score: integrity 40, index completeness 40, status 20. */
-export function vaultHealth(): VaultHealth[] {
-  return getAllArchives().map((archive) => {
+export function vaultHealth(archives = getAllArchives()): VaultHealth[] {
+  return archives.map((archive) => {
     const checks = archive.dataset.dataIntegrity
     const passed = checks.filter((check) => check.verified).length
     const totalChecks = checks.length || 1
@@ -89,8 +89,8 @@ export interface MatrixRow {
 const toCount = (value: string) => Number(value.replace(/,/g, '')) || 0
 
 /** Resolution rows crossed with the channels that contributed to them. */
-export function resolutionByChannel(): MatrixRow[] {
-  return getAggregatedDatabase().resolutionMatrix.map((row) => {
+export function resolutionByChannel(archives?: Parameters<typeof getAggregatedDatabase>[0]): MatrixRow[] {
+  return getAggregatedDatabase(archives).resolutionMatrix.map((row) => {
     const total = row.numericFiles || 1
     return {
       id: row.id,
@@ -117,11 +117,11 @@ export interface TimelineEvent {
 }
 
 /** Audit facts only: completion, index totals, integrity outcome, scan reference. */
-export function auditTimeline(): TimelineEvent[] {
-  const aggregate = getAggregatedDatabase()
+export function auditTimeline(archives = getAllArchives()): TimelineEvent[] {
+  const aggregate = getAggregatedDatabase(archives)
   const events: TimelineEvent[] = []
 
-  for (const archive of getAllArchives()) {
+  for (const archive of archives) {
     const checks = archive.dataset.dataIntegrity
     const passed = checks.filter((check) => check.verified).length
 
@@ -142,6 +142,8 @@ export function auditTimeline(): TimelineEvent[] {
     })
   }
 
+  if (archives.length === 0) return events
+
   events.push({
     id: 'aggregate',
     when: aggregate.scanRecord.completed,
@@ -154,6 +156,6 @@ export function auditTimeline(): TimelineEvent[] {
 }
 
 /** One snapshot date across the registry means a trend line would be invented. */
-export function snapshotDates(): string[] {
-  return Array.from(new Set(getAllArchives().map((archive) => archive.completedDate)))
+export function snapshotDates(archives = getAllArchives()): string[] {
+  return Array.from(new Set(archives.map((archive) => archive.completedDate)))
 }

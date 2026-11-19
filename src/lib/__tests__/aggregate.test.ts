@@ -4,10 +4,24 @@ import {
   getAggregatedDatabase,
   parseStorageToBytes,
 } from '../../data/aggregateDatabase'
+import { REGISTERED_ARCHIVES } from '../../data/archiveRegistry'
+
+// The registry is unpublished while the replacement pages are built, so the
+// published aggregate is empty. The dataset contract is asserted against the
+// retained archive records directly.
+const DATA = getAggregatedDatabase(REGISTERED_ARCHIVES)
 
 describe('aggregate database', () => {
-  it('reports the audited totals unchanged', () => {
+  it('renders an honest empty aggregate when nothing is published', () => {
     const aggregate = getAggregatedDatabase()
+    expect(aggregate.archiveCount).toBe(0)
+    expect(aggregate.numericFiles).toBe(0)
+    expect(aggregate.numericMessages).toBe(0)
+    expect(aggregate.extensionIntelligence.uniqueExtensionsCount).toBe(0)
+  })
+
+  it('reports the audited totals unchanged', () => {
+    const aggregate = DATA
     expect(aggregate.archiveCount).toBe(2)
     expect(aggregate.numericFiles).toBe(1_948_083)
     expect(aggregate.totalFiles).toBe('1,948,083')
@@ -17,14 +31,14 @@ describe('aggregate database', () => {
   })
 
   it('keeps every cross-archive integrity check verified', () => {
-    const aggregate = getAggregatedDatabase()
+    const aggregate = DATA
     expect(aggregate.dataIntegrity.length).toBeGreaterThan(0)
     expect(aggregate.dataIntegrity.every((item) => item.verified)).toBe(true)
     expect(aggregate.allScansVerified).toBe(true)
   })
 
   it('builds the resolution matrix and category split from the datasets', () => {
-    const aggregate = getAggregatedDatabase()
+    const aggregate = DATA
     expect(aggregate.resolutionMatrix.length).toBeGreaterThan(0)
     expect(aggregate.categoryBreakdown.length).toBeGreaterThan(0)
     const matrixFiles = aggregate.resolutionMatrix.reduce((sum, row) => sum + row.numericFiles, 0)
@@ -33,7 +47,7 @@ describe('aggregate database', () => {
   })
 
   it('orders channel contributions by storage', () => {
-    const aggregate = getAggregatedDatabase()
+    const aggregate = DATA
     expect(aggregate.channelContributions.length).toBe(2)
     const [first, second] = aggregate.channelContributions
     expect(first.numericStorageTB).toBeGreaterThan(second.numericStorageTB)

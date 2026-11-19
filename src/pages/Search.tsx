@@ -73,8 +73,8 @@ export function Search() {
             <p className="eyebrow">Index-wide lookup</p>
             <h1>Search</h1>
             <p className="lede">
-              Search the 490 recorded extensions, their categories and the pages of this site. Results are derived
-              from the same aggregate the reports use — nothing extra is indexed.
+              Search every recorded extension, its category and the pages of this site. Results are derived from the
+              same aggregate the reports use — nothing extra is indexed.
             </p>
           </div>
           <div className="page-head__meta">

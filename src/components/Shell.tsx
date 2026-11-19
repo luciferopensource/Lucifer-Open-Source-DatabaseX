@@ -134,7 +134,7 @@ export function Sidebar({
 
         <div className="status-line">
           <span className="status-line__dot" />
-          {aggregate.archiveCount} channels verified
+          {aggregate.archiveCount > 0 ? `${aggregate.archiveCount} channels verified` : 'awaiting first channel'}
         </div>
       </div>
     </aside>
@@ -209,10 +209,19 @@ export function Footer({
         <div className="footer__brand">
           <h3>Lucifer Database X</h3>
           <p>
-            A presentation layer for verified channel scan telemetry. {aggregate.archiveCount} archives,{' '}
-            {aggregate.totalFiles} indexed files and{' '}
-            {aggregate.extensionIntelligence.uniqueExtensionsCount.toLocaleString('en-GB')} unique extensions — every
-            figure on this site traced back to the two audit reports. Nothing here is estimated.
+            {aggregate.archiveCount > 0 ? (
+              <>
+                A presentation layer for verified channel scan telemetry. {aggregate.archiveCount} archives,{' '}
+                {aggregate.totalFiles} indexed files and{' '}
+                {aggregate.extensionIntelligence.uniqueExtensionsCount.toLocaleString('en-GB')} unique extensions — every
+                figure on this site traced back to the audited reports. Nothing here is estimated.
+              </>
+            ) : (
+              <>
+                A presentation layer for verified channel scan telemetry. No channel is published right now — the audited
+                datasets stay on file, and the next registry entry merges into every figure automatically.
+              </>
+            )}
           </p>
         </div>
 

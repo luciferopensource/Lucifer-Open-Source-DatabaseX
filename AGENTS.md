@@ -46,6 +46,10 @@ only, or the effect turns muddy and the compositor budget dies.
 
 * Zero fabricated records. `CATALOG_ENTRIES` stays empty until a verified query populates it, and the
   empty state must render as empty.
+* Both archives are currently `isPublic: false` in `src/data/archiveRegistry.ts`: the datasets stay in the
+  file, but the channels are hidden from every surface until their replacement pages exist. Never delete the
+  datasets to hide a channel — flip `isPublic`. An empty registry must still render every page without errors
+  (it is covered by unit and smoke tests).
 * Every displayed figure must come from `src/data/` derivation. No hard-coded totals; scan duration
   is summed from the two channel durations, not pasted.
 * The integrity matrix is computed from the aggregate. Never hard-code it to verified.

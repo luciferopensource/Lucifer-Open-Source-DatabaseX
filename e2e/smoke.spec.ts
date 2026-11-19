@@ -43,8 +43,8 @@ test.describe('appearance', () => {
     else await page.keyboard.press('ControlOrMeta+k')
     const palette = page.locator('.palette')
     await expect(palette).toBeVisible()
-    await palette.locator('input').fill('mkv')
-    await expect(palette.getByRole('option', { name: /\.mkv/i }).first()).toBeVisible()
+    await palette.locator('input').fill('compare')
+    await expect(palette.getByRole('option', { name: /compare/i }).first()).toBeVisible()
   })
 
   test('sidebar can be hidden and restored from the top bar', async ({ page, isMobile }) => {

@@ -188,6 +188,11 @@ export function StorageReport({
         flush
       >
         <div className="record-list">
+          {records.length === 0 ? (
+            <p className="empty" style={{ padding: '0 20px 18px' }}>
+              No largest-file records yet — publish a channel archive to populate this list.
+            </p>
+          ) : null}
           {records.map((record) => (
             <div className="record" key={`${record.channel ?? 'record'}-${record.name}`}>
               <span className="record__name">

@@ -32,7 +32,10 @@ export const REGISTERED_ARCHIVES: ArchiveRecord[] = [
     numericFiles: 999973,
     numericMessages: 999977,
     accentColor: '#d4af37',
-    isPublic: true,
+    // Published flag only — the audit dataset above is untouched. The report
+    // pages are retired until their replacements arrive, so the channel is
+    // hidden from every surface; flip this back to true to restore it.
+    isPublic: false,
   },
   {
     id: 'archive-002',
@@ -57,7 +60,8 @@ export const REGISTERED_ARCHIVES: ArchiveRecord[] = [
     numericFiles: 948110,
     numericMessages: 948114,
     accentColor: '#2ecc71',
-    isPublic: true,
+    // See the note on archive-001: dataset retained, channel unpublished.
+    isPublic: false,
   },
 ]
 

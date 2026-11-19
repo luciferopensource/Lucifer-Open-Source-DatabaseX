@@ -65,9 +65,15 @@ export function Home() {
           <aside className="snapshot">
             <div className="snapshot__head">
               <span className="snapshot__title">System snapshot</span>
-              <Pill tone="pos" dot>
-                Verified
-              </Pill>
+              {aggregate.archiveCount > 0 ? (
+                <Pill tone="pos" dot>
+                  Verified
+                </Pill>
+              ) : (
+                <Pill tone="plain" dot>
+                  Awaiting data
+                </Pill>
+              )}
             </div>
 
             <dl className="snapshot__rows">
@@ -127,7 +133,7 @@ export function Home() {
                     <span className="legend__value">{row.pctLabel}</span>
                   </span>
                 ))}
-                {remainder > 0.05 ? (
+                {active.length > 0 && remainder > 0.05 ? (
                   <span className="legend__item">
                     <span className="legend__swatch" style={{ background: 'var(--line-3)' }} />
                     {active.length - legend.length} further tiers

@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { auditTimeline, resolutionByChannel, snapshotDates, vaultHealth } from '../insight'
+import { REGISTERED_ARCHIVES } from '../../data/archiveRegistry'
 
 describe('insight derivations', () => {
   it('scores each registered vault from its own record', () => {
-    const reports = vaultHealth()
+    const reports = vaultHealth(REGISTERED_ARCHIVES)
     expect(reports).toHaveLength(2)
     for (const report of reports) {
       expect(report.parts).toHaveLength(3)
@@ -14,7 +15,7 @@ describe('insight derivations', () => {
   })
 
   it('crosses every resolution tier with its contributing channels', () => {
-    const rows = resolutionByChannel()
+    const rows = resolutionByChannel(REGISTERED_ARCHIVES)
     expect(rows.length).toBeGreaterThan(0)
     for (const row of rows) {
       expect(row.cells).toHaveLength(2)
@@ -23,10 +24,17 @@ describe('insight derivations', () => {
   })
 
   it('records one timeline entry per archive plus the aggregate reconciliation', () => {
-    expect(auditTimeline()).toHaveLength(5)
+    expect(auditTimeline(REGISTERED_ARCHIVES)).toHaveLength(5)
   })
 
   it('states the single snapshot date honestly', () => {
-    expect(snapshotDates()).toHaveLength(1)
+    expect(snapshotDates(REGISTERED_ARCHIVES)).toHaveLength(1)
+  })
+
+  it('returns nothing while the registry is unpublished', () => {
+    expect(vaultHealth()).toHaveLength(0)
+    expect(resolutionByChannel()).toHaveLength(0)
+    expect(auditTimeline()).toHaveLength(0)
+    expect(snapshotDates()).toHaveLength(0)
   })
 })

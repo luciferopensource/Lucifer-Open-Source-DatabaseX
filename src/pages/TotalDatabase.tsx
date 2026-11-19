@@ -4,7 +4,7 @@ import { replacePath } from '../lib/url'
 import { PageLink } from '../components/PageLink'
 import { ExtensionLedger } from '../components/ExtensionLedger'
 import { AuditTimeline, ResolutionChannelMatrix, VaultHealthCards } from '../components/Intelligence'
-import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
+import { getAllArchives } from '../data/archiveRegistry'
 import { useStorageUnit } from '../data/storageUnitContext'
 import {
   categoriesFromAggregate,
@@ -36,7 +36,8 @@ export function TotalDatabase() {
   const aggregate = getAggregatedDatabase()
   const { formatString } = useStorageUnit()
 
-  const scanDuration = sumDurations(REGISTERED_ARCHIVES.map((archive) => archive.dataset.scanSummary.scanDuration))
+  const published = getAllArchives()
+  const scanDuration = sumDurations(published.map((archive) => archive.dataset.scanSummary.scanDuration))
   const categories = categoriesFromAggregate(aggregate)
   const resolution = resolutionFromAggregate(aggregate)
   const extensions = extensionsFromAggregate(aggregate)
@@ -44,7 +45,7 @@ export function TotalDatabase() {
   const health = vaultHealth()
   const matrix = resolutionByChannel()
   const timeline = auditTimeline()
-  const channels = REGISTERED_ARCHIVES.filter((archive) => archive.isPublic).map((archive) => shortChannel(archive.displayName))
+  const channels = published.map((archive) => shortChannel(archive.displayName))
 
   return (
     <>
@@ -68,7 +69,7 @@ export function TotalDatabase() {
             <dd>{aggregate.archiveCount}</dd>
             <dt>Aggregate state</dt>
             <dd>
-              <StatusPill status={aggregate.allScansVerified ? 'COMPLETE' : 'PARTIAL'} />
+              {published.length === 0 ? <Pill tone="plain">EMPTY</Pill> : <StatusPill status={aggregate.allScansVerified ? 'COMPLETE' : 'PARTIAL'} />}
             </dd>
           </dl>
         </div>
@@ -86,7 +87,11 @@ export function TotalDatabase() {
           sub={`${aggregate.combinedStoragePB} full quota`}
         />
         <Kpi label="Total files found" value={aggregate.totalFiles} sub="verified records" />
-        <Kpi label="Messages checked" value={aggregate.totalMessages} sub="zero missed" />
+        <Kpi
+          label="Messages checked"
+          value={aggregate.totalMessages}
+          sub={published.length > 0 ? 'zero missed' : 'nothing checked yet'}
+        />
         <Kpi label="Scan duration" value={scanDuration} sub={`across ${aggregate.archiveCount} scans`} />
       </div>
 
@@ -111,9 +116,20 @@ export function TotalDatabase() {
             { label: 'Combined storage', value: formatString(aggregate.combinedStorage) },
             { label: 'Scan duration', value: scanDuration },
             { label: 'Archives', value: `${aggregate.archiveCount} registered` },
-            { label: 'Integrity', value: aggregate.allScansVerified ? 'All verified' : 'Partial' },
+            { label: 'Integrity', value: published.length === 0 ? 'No channels' : aggregate.allScansVerified ? 'All verified' : 'Partial' },
           ]}
         />
+
+        {published.length === 0 ? (
+          <div style={{ marginTop: 16 }}>
+            <Panel title="No channel is published" icon={<IconDatabase />} meta="Registry empty">
+              <p className="empty">
+                Backup 01 and Backup 02 are unpublished while their replacements are built. Publish a registry entry
+                and every total, matrix and ledger on this page merges it automatically.
+              </p>
+            </Panel>
+          </div>
+        ) : null}
 
         <div style={{ marginTop: 16 }}>
           <Panel
@@ -122,13 +138,23 @@ export function TotalDatabase() {
             meta={`${categories.length} categories`}
             flush
           >
-            <CategoryMatrix rows={categories} />
+            {categories.length > 0 ? (
+              <CategoryMatrix rows={categories} />
+            ) : (
+              <p className="empty" style={{ padding: '0 20px 22px' }}>
+                No category records yet — publish a channel archive and its split appears here.
+              </p>
+            )}
           </Panel>
         </div>
 
         <div style={{ marginTop: 16 }}>
           <Panel title="Individual channel contributions" icon={<IconDatabase />} meta={`${aggregate.archiveCount} channels`}>
-            <ContributionCards items={aggregate.channelContributions} />
+            {aggregate.channelContributions.length > 0 ? (
+              <ContributionCards items={aggregate.channelContributions} />
+            ) : (
+              <p className="empty">No channel contributions yet — the registry is empty.</p>
+            )}
           </Panel>
         </div>
 
@@ -150,7 +176,13 @@ export function TotalDatabase() {
       </TabPanel>
 
       <TabPanel id="resolution" active={tab}>
-        <ResolutionReport rows={resolution} />
+        {resolution.length > 0 ? (
+          <ResolutionReport rows={resolution} />
+        ) : (
+          <Panel title="Resolution spectrum" icon={<IconChart />} meta="0 profiles">
+            <p className="empty">No resolution records yet — publish a channel archive and its tiers appear here.</p>
+          </Panel>
+        )}
       </TabPanel>
 
       <TabPanel id="storage" active={tab}>

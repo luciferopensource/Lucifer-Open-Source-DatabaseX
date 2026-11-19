@@ -1,4 +1,4 @@
-import { REGISTERED_ARCHIVES } from '../data/archiveRegistry'
+import { getAllArchives } from '../data/archiveRegistry'
 import { parseStorageToBytes } from '../data/aggregateDatabase'
 import { useStorageUnit } from '../data/storageUnitContext'
 import { parseCount, shortChannel } from '../lib/view'
@@ -24,23 +24,25 @@ interface Side {
   duration: string
 }
 
-const SIDES: Side[] = REGISTERED_ARCHIVES.map((archive) => {
-  const highlights = archive.dataset.storageHighlights
-  return {
-    name: archive.displayName,
-    scanId: archive.scanId,
-    storage: archive.combinedStorage,
-    storageBytes: parseStorageToBytes(archive.combinedStorage),
-    files: archive.numericFiles,
-    messages: archive.numericMessages,
-    average: highlights.averageFileSize,
-    averageBytes: parseStorageToBytes(highlights.averageFileSize),
-    largest: highlights.largestFileSize,
-    largestBytes: parseStorageToBytes(highlights.largestFileSize),
-    extensions: archive.dataset.extensionSummary.uniqueExtensions,
-    duration: archive.dataset.scanSummary.scanDuration,
-  }
-})
+function buildSides(): Side[] {
+  return getAllArchives().map((archive) => {
+    const highlights = archive.dataset.storageHighlights
+    return {
+      name: archive.displayName,
+      scanId: archive.scanId,
+      storage: archive.combinedStorage,
+      storageBytes: parseStorageToBytes(archive.combinedStorage),
+      files: archive.numericFiles,
+      messages: archive.numericMessages,
+      average: highlights.averageFileSize,
+      averageBytes: parseStorageToBytes(highlights.averageFileSize),
+      largest: highlights.largestFileSize,
+      largestBytes: parseStorageToBytes(highlights.largestFileSize),
+      extensions: archive.dataset.extensionSummary.uniqueExtensions,
+      duration: archive.dataset.scanSummary.scanDuration,
+    }
+  })
+}
 
 function leaderLabel(a: number, b: number): 'a' | 'b' | 'tie' {
   if (a === b) return 'tie'
@@ -49,7 +51,53 @@ function leaderLabel(a: number, b: number): 'a' | 'b' | 'tie' {
 
 export function Compare() {
   const { formatString, formatBytes } = useStorageUnit()
-  const [a, b] = SIDES
+  const sides = buildSides()
+  const archives = getAllArchives()
+  const [a, b] = sides
+  const [archiveA, archiveB] = archives
+
+  const head = (
+    <div className="page-head">
+      <PageLink className="backlink" href={routeHref('home')}>
+        <IconArrowLeft width={13} height={13} /> Overview
+      </PageLink>
+      <div className="page-head__row">
+        <div>
+          <p className="eyebrow">Cross-archive comparison</p>
+          <h1>Channel head to head</h1>
+          <p className="lede">
+            Published archives side by side. Every figure is read from the same datasets that drive the individual
+            reports — nothing is recalculated by hand or rounded for effect.
+          </p>
+        </div>
+        <dl className="page-head__meta">
+          <dt>Channels compared</dt>
+          <dd>{sides.length}</dd>
+          <dt>Source</dt>
+          <dd>Registered archive registry</dd>
+        </dl>
+      </div>
+      <div className="page-head__actions">
+        <CopyLinkButton />
+        <PrintButton />
+        <ShareButton title="Compare channels" />
+      </div>
+    </div>
+  )
+
+  if (sides.length < 2 || !archiveA || !archiveB) {
+    return (
+      <>
+        {head}
+        <Panel title="Nothing to compare yet" icon={<IconChart />} meta={`${sides.length} published`}>
+          <p className="empty">
+            A head-to-head needs two published archives. Both retired channels are unpublished, so no comparison is
+            drawn from stale data — publish two registry entries and this page fills itself.
+          </p>
+        </Panel>
+      </>
+    )
+  }
 
   const rows: {
     label: string
@@ -68,14 +116,14 @@ export function Compare() {
 
   const categoryNames = Array.from(
     new Set([
-      ...REGISTERED_ARCHIVES[0].dataset.categoryBreakdown.map((item) => item.category),
-      ...REGISTERED_ARCHIVES[1].dataset.categoryBreakdown.map((item) => item.category),
+      ...archiveA.dataset.categoryBreakdown.map((item) => item.category),
+      ...archiveB.dataset.categoryBreakdown.map((item) => item.category),
     ]),
   )
 
   const categoryRows = categoryNames.map((name) => {
-    const first = REGISTERED_ARCHIVES[0].dataset.categoryBreakdown.find((item) => item.category === name)
-    const second = REGISTERED_ARCHIVES[1].dataset.categoryBreakdown.find((item) => item.category === name)
+    const first = archiveA.dataset.categoryBreakdown.find((item) => item.category === name)
+    const second = archiveB.dataset.categoryBreakdown.find((item) => item.category === name)
     const firstFiles = first ? parseCount(first.files) : 0
     const secondFiles = second ? parseCount(second.files) : 0
     return {
@@ -88,12 +136,12 @@ export function Compare() {
 
   const resolutionRows = Array.from(
     new Set([
-      ...REGISTERED_ARCHIVES[0].dataset.resolutionBreakdown.map((item) => item.id),
-      ...REGISTERED_ARCHIVES[1].dataset.resolutionBreakdown.map((item) => item.id),
+      ...archiveA.dataset.resolutionBreakdown.map((item) => item.id),
+      ...archiveB.dataset.resolutionBreakdown.map((item) => item.id),
     ]),
   ).map((id) => {
-    const first = REGISTERED_ARCHIVES[0].dataset.resolutionBreakdown.find((item) => item.id === id)
-    const second = REGISTERED_ARCHIVES[1].dataset.resolutionBreakdown.find((item) => item.id === id)
+    const first = archiveA.dataset.resolutionBreakdown.find((item) => item.id === id)
+    const second = archiveB.dataset.resolutionBreakdown.find((item) => item.id === id)
     const firstFiles = first ? parseCount(first.files) : 0
     const secondFiles = second ? parseCount(second.files) : 0
     return {
@@ -107,35 +155,10 @@ export function Compare() {
 
   return (
     <>
-      <div className="page-head">
-        <PageLink className="backlink" href={routeHref('home')}>
-          <IconArrowLeft width={13} height={13} /> Overview
-        </PageLink>
-        <div className="page-head__row">
-          <div>
-            <p className="eyebrow">Cross-archive comparison</p>
-            <h1>Channel head to head</h1>
-            <p className="lede">
-              Both registered archives side by side. Every figure is read from the same datasets that drive the
-              individual reports — nothing is recalculated by hand or rounded for effect.
-            </p>
-          </div>
-          <dl className="page-head__meta">
-            <dt>Channels compared</dt>
-            <dd>{SIDES.length}</dd>
-            <dt>Source</dt>
-            <dd>Registered archive registry</dd>
-          </dl>
-        </div>
-        <div className="page-head__actions">
-          <CopyLinkButton />
-          <PrintButton />
-          <ShareButton title="Compare channels" />
-        </div>
-      </div>
+      {head}
 
       <div className="compare-cards">
-        {SIDES.map((side) => (
+        {sides.map((side) => (
           <article className="compare-card" key={side.scanId}>
             <div className="compare-card__head">
               <span className="archive-card__index">{shortChannel(side.name)}</span>

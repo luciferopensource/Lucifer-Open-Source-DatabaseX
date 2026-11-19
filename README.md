@@ -194,13 +194,21 @@ Pages live on real paths, not fragments:
 ## Quality gates
 
 ```
-npm test          # 24 Vitest + Testing Library checks (aggregate maths, auto-merge, URL state, router, insight, accent maths, copy)
+npm test          # 26 Vitest + Testing Library checks (aggregate maths, empty registry, auto-merge, URL state, router, insight, accent maths, copy)
 npm run test:e2e  # Playwright smoke: routes, retired URLs, theme persistence, palette, sidebar, embed
 npm run lighthouse  # Lighthouse CI budget from lighthouserc.json
 ```
 
 The GitHub Actions workflow runs build (with `tsc --noEmit`), unit tests and the Chromium smoke suite, then
 deploys `dist` to Cloudflare Pages when the Cloudflare secrets are configured.
+
+## Registry state
+
+`REGISTERED_ARCHIVES` keeps both audited datasets in the file, but both entries are currently
+`isPublic: false`: the report pages are retired while their replacements are built, so every surface renders an
+honest empty state (0 channels, 0 files, "No channel is published") instead of a ghost channel. Publishing is
+one flag per archive — totals, matrices, ledgers, search, compare and the build-time metadata merge the entry
+automatically. The empty aggregate is also asserted in the test suite.
 
 ## Retired pages
 

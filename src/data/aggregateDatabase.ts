@@ -530,7 +530,7 @@ export function getAggregatedDatabase(
     channelContributions,
     dataIntegrity,
     scanRecord,
-    allScansVerified: completeScans === archiveCount,
+    allScansVerified: archiveCount > 0 && completeScans === archiveCount,
   }
 
   if (!archives) aggregateCache = result

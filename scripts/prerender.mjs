@@ -19,24 +19,30 @@ const meta = JSON.parse(await readFile(path.join(dist, 'route-meta.json'), 'utf8
 
 const SITE = 'https://luciferdatabase.pages.dev'
 
+const hasChannels = meta.archives > 0
+
 const ROUTES = [
   {
     path: 'total-database',
     title: 'Total Database',
     heading: 'Total Database',
-    description: `Aggregate telemetry across ${meta.archives} channel archives: ${meta.storage} (${meta.storagePB}), ${meta.files} files and ${meta.messages} messages checked.`,
+    description: hasChannels
+      ? `Aggregate telemetry across ${meta.archives} channel archives: ${meta.storage} (${meta.storagePB}), ${meta.files} files and ${meta.messages} messages checked.`
+      : 'Aggregate telemetry across every published channel archive. No channel is published yet, so the page renders an honest empty state.',
   },
   {
     path: 'compare',
     title: 'Compare Channels',
     heading: 'Channel head to head',
-    description: `Side-by-side comparison of the ${meta.archives} registered archives: storage, files, messages, resolution and category splits.`,
+    description: hasChannels
+      ? `Side-by-side comparison of the ${meta.archives} published archives: storage, files, messages, resolution and category splits.`
+      : 'Side-by-side comparison of the published archives. Two channels are needed, so the page currently states that nothing is published.',
   },
   {
     path: 'search',
     title: 'Search',
     heading: 'Search the index',
-    description: 'Search 490 recorded extensions, their categories and every page of the Lucifer Database X index.',
+    description: 'Search every recorded extension, its category and every page of the Lucifer Database X index.',
   },
   {
     path: 'sources',
@@ -113,7 +119,7 @@ function shellFor(route) {
         <p style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#666">Lucifer Open Source · verified scan telemetry</p>
         <h1 style="font-size:34px;margin:12px 0">${escapeHtml(route.heading)}</h1>
         <p>${description}</p>
-        <p><strong>${meta.files}</strong> files · <strong>${meta.storage}</strong> (${meta.storagePB}) · <strong>${meta.messages}</strong> messages checked across ${meta.archives} archives · ${meta.extensions} unique extensions.</p>
+        <p>${hasChannels ? `<strong>${meta.files}</strong> files · <strong>${meta.storage}</strong> (${meta.storagePB}) · <strong>${meta.messages}</strong> messages checked across ${meta.archives} archives · ${meta.extensions} unique extensions.` : 'No channel is published yet — the registry is empty, so no totals are claimed.'}</p>
         <ul>${NAV_LINKS.map(([href, label]) => `<li><a href="${href}">${label}</a></li>`).join('')}</ul>
         <p>This page renders its tables with JavaScript. The totals above are baked into the HTML so nothing is hidden from a crawler.</p>
       </div>
